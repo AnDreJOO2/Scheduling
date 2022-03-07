@@ -235,82 +235,145 @@ assert schedule.isFeasible() == False
 ### END HIDDEN TESTS
 
 class Schedule(Schedule):
+
+    #maksymalne opóźnienie, czyli maksymalna różnica pomiędzy czasem zakończenia zadania a pożądanym czasem zakończenia tego zadania (uwaga: ta wartość może być ujemna)
     def lmax(self):
         assert self.isFeasible() == True
         ### POCZATEK ROZWIAZANIA
-        n = len(self.self.instance.jobs)
-        zmienna = 0;
-        max_opoznienie = 0;
-        for j in n:
-            zmienna = j.complete - j.job.d
-            if zmienna > max_opoznienie:
-                max_opoznienie = zmienna;
-        return max_opoznienie;
+
+        listaZadan = self.assignments
+        return max(map(lambda x: x.complete - x.job.d, listaZadan))
+
         ### KONIEC ROZWIAZANIA
 
+    #liczba spóźnionych zadań (zadanie jest spóźnione, jeśli czas jego zakończenia przekracza pożądany czas zakończenia)
     def usum(self):
         assert self.isFeasible() == True
         ### POCZATEK ROZWIAZANIA
-        n = len(self.self.instance.jobs)
-        ile = 0;
-        for j in n:
-            if j.complete > j.job.d:
-                ile += 1;
-        return ile
+
+        listaZadan = self.assignments
+        n = len(listaZadan)
+
+        ile_spoznien = 0
+        for i in range(0,n):
+            if listaZadan[i].complete > listaZadan[i].job.d:
+                ile_spoznien += 1
+
+        return ile_spoznien
+
         ### KONIEC ROZWIAZANIA
 
+    #suma wag spóźnionych zadań
     def uwsum(self):
         assert self.isFeasible() == True
         ### POCZATEK ROZWIAZANIA
-        n = len(self.self.instance.jobs)
-        sum_wag = 0;
-        for j in n:
-            if j.complete > j.job.d:
-                sum_wag += j.w;
-        return sum_wag
+
+        listaZadan = self.assignments
+        n = len(listaZadan)
+
+        suma_wag = 0
+        for i in range(0, n):
+            if listaZadan[i].complete > listaZadan[i].job.d:
+                suma_wag += listaZadan[i].job.w
+        return suma_wag
+
         ### KONIEC ROZWIAZANIA
 
+    #suma spóźnień, przy czym przez spóźnienie zadania rozumiemy większą z wartości: opóźnienie i 0 (spóźnienie, w przeciwieństwie do opóźnienia, nie może być ujemne)
     def tsum(self):
         assert self.isFeasible() == True
         ### POCZATEK ROZWIAZANIA
-        n = len(self.self.instance.jobs)
-        sum_spoznien = 0;
-        zmienna = 0;
-        for j in n:
-            zmienna = j.complete - j.job.d
+        listaZadan = self.assignments
+        n = len(listaZadan)
+
+        sum_spoznien = 0
+        for i in range(0,n):
+            zmienna = listaZadan[i].complete - listaZadan[i].job.d
             if zmienna > 0:
-                sum_spoznien += zmienna;
-        return sum_spoznien;
+                sum_spoznien += zmienna
+        return sum_spoznien
+
         ### KONIEC ROZWIAZANIA
 
+    # suma ważonych spóźnień, przy czym wagą jest waga zadania, którego spóźnienie dotyczy.
     def twsum(self):
         assert self.isFeasible() == True
         ### POCZATEK ROZWIAZANIA
-        n = len(self.self.instance.jobs)
-        sum_wag = 0;
-        zmienna = 0;
-        for j in n:
-            zmienna = j.complete - j.job.d
+
+        listaZadan = self.assignments
+        n = len(listaZadan)
+
+        suma_wazonych_wag = 0
+        for i in range(0,n):
+            zmienna = listaZadan[i].complete - listaZadan[i].job.d
             if zmienna > 0:
-                sum_wag += j.w;
-        return sum_wag;
+                suma_wazonych_wag += listaZadan[i].job.w * zmienna # waga * spóźnienie
+
+        return suma_wazonych_wag
+
         ### KONIEC ROZWIAZANIA
 
 from copy import deepcopy
 
+# schedule = Schedule(instance)
+# instancjaJobs = instance.jobs  # wszystkie zadania
+#
+# n = len(instancjaJobs)
+# machines = schedule.instance.machines  # dostępne procesory
+# times = [
+#             0] * machines  # w zależności ile jest procesorow, na początku czas wszystkich ustawia na 0, tablica wyników z czasem dla każdego procesora
+# for i in range(0, n):
+#     pierwszy = 0
+#     for j in range(0, machines):
+#         if times[j] < times[pierwszy]:
+#             pierwszy = j
+#     schedule.assignments.append(
+#         JobAssignment(instancjaJobs[i], pierwszy + 1, times[pierwszy], times[pierwszy] + instancjaJobs[i].p))
+#     times[pierwszy] += instancjaJobs[i].p
+
+# ### BEGIN HIDDEN TESTS
+# ja = Job("J1", p=5)
+# jb = Job("J2", p=10)
+# jc = Job("J3", p=15)
+# jd = Job("J4", p=20, r=32)
+#
+# instance = Instance()
+# instance.jobs = [ja, jb, jc, jd]
+#
+# schedule = Schedule(instance)
+#
+# # Poprawne uszeregowanie
+# schedule.assignments = [
+#     JobAssignment(ja, 0, 5),
+#     JobAssignment(jb, 5, 15),
+#     JobAssignment(jc, 15, 30),
+#     JobAssignment(jd, 32, 52),
+# ]
+
+    # Job: self.i = id, self.p = czas wykonania zadania, self.w = w = Waga zadania,  self.r = czas gotowości zadania
+    # JobAssigment: self.job = Zadanie, self.start = Czas rozpoczęcia zadania, self.complete = Czas zakończenia zadania
+    # Instance: self.jobs = [] - pusta tablica job
+    #self.d = d  # Pożądany czas zakończenia zadania
+
+    # warunek: czas startu >= czas gotowości
+
+
+
+
 def NoOrdering(instance):
     instance = deepcopy(instance)
     ### POCZATEK ROZWIAZANIA
-    schedule = Schedule(instance)
-    listaZadan = schedule.instance.jobs # wszystkie zadania
-    n = len(listaZadan)
-    machines = schedule.instance.jobs
-    print(machines)
-    print(listaZadan)
-    print(n)
 
+    schedule = Schedule(instance)
+    listaZadan = instance.jobs  # wszystkie zadania
+    n = len(listaZadan)
+
+    czas = listaZadan[0].r
     for i in range(0, n):
-        print(listaZadan[i])
+        if listaZadan[i].r > czas:
+            czas = listaZadan[i].r
+        schedule.assignments.append(JobAssignment(listaZadan[i], czas, czas+listaZadan[i].p))
+        czas = czas+listaZadan[i].p
 
     ### KONIEC ROZWIAZANIA
     return schedule
@@ -318,14 +381,36 @@ def NoOrdering(instance):
 def EDD(instance):
     instance = deepcopy(instance)
     ### POCZATEK ROZWIAZANIA
-    schedule = sorted(instance.jobs, key= lambda  j: j.d)
+
+    schedule = Schedule(instance)
+    listaZadan = sorted(instance.jobs, key= lambda x: x.d) #posortowane zadania według rosnącego d (pożądany czas zakończenia)
+    n = len(listaZadan)
+
+    czas = listaZadan[0].r
+    for i in range(0, n):
+        if listaZadan[i].r > czas:
+            czas = listaZadan[i].r
+        schedule.assignments.append(JobAssignment(listaZadan[i], czas, czas + listaZadan[i].p))
+        czas = czas + listaZadan[i].p
+
     ### KONIEC ROZWIAZANIA
     return schedule
 
 def ERT(instance):
     instance = deepcopy(instance)
     ### POCZATEK ROZWIAZANIA
-    schedule = sorted(instance.jobs, key=lambda j: j.r)
+
+    schedule = Schedule(instance)
+    listaZadan = sorted(instance.jobs, key=lambda x: x.r)  # posortowane zadania według rosnącego r (czas gotowości zadania)
+    n = len(listaZadan)
+
+    czas = listaZadan[0].r
+    for i in range(0, n):
+        if listaZadan[i].r > czas:
+            czas = listaZadan[i].r
+        schedule.assignments.append(JobAssignment(listaZadan[i], czas, czas + listaZadan[i].p))
+        czas = czas + listaZadan[i].p
+
     ### KONIEC ROZWIAZANIA
     return schedule
 
@@ -416,3 +501,57 @@ assert no.twsum() == 391108480
 assert edd.twsum() == 71321799
 assert ert.twsum() == 69455351
 ### END HIDDEN TESTS
+
+# ERT > EDD > NoOrdering
+# ERT > EDD > NoOrdering
+
+
+# from copy import deepcopy
+#
+# def HodgesonMoore(instance):
+#     instance = deepcopy(instance)
+#     ### POCZATEK ROZWIAZANIA
+#
+#     schedule = Schedule(instance)
+#     listaZadan = sorted(instance.jobs, key=lambda x: x.d)  # posortowane zadania według rosnącego d (pożądany czas zakończenia)
+#     n = len(listaZadan)
+#
+#     end = False
+#     while end is False:
+#         for i in range(0,n):
+#             if listaZadan[i].d is not None:
+#                 end = True
+#                 return end
+#         if listaZadan is None:
+#             end = True
+#             return end
+#
+#         for i in listaZadan:
+#             if listaZadan[i].complete > listaZadan[i].d:
+#                 k = i
+#             break
+#
+#         for i in range(1,k):
+#             schedule.assignments.append(listaZadan[i])
+#             listaZadan.remove(listaZadan[i])
+#
+#     ### KONIEC ROZWIAZANIA
+#     return schedule
+#
+#
+# random.seed(1234567890)  # Ustaw ziarno generatora na stałe, aby wyniki były przewidywalne
+#
+# instance = Instance()
+# instance.generate(100, 1, 100)  # Wygeneruj 100 zadań o czasach wykonywania z przedziału od 1 do 100
+#
+# # Każdemu z zadań przypisz losowy pożądany czas zakończenia
+# for i in instance.jobs:
+#     i.d = random.randint(50, 200)
+#
+# edd = EDD(instance)
+# hm = HodgesonMoore(instance)
+#
+# assert hm.usum() == 82
+# assert edd.usum() == 99
+
+print("Wszystko działa")

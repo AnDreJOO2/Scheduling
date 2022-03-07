@@ -440,6 +440,9 @@ def L(instance):
         schedule.assignments.append(JobAssignment(instancjaJobs[i], pierwszy + 1, times[pierwszy], times[pierwszy] + instancjaJobs[i].p))
         times[pierwszy] += instancjaJobs[i].p
 
+    listaZadan = schedule.assignments
+    for i in range(0, len(listaZadan)):
+        print(listaZadan[i])
     ### KONIEC ROZWIAZANIA
     return schedule
 
