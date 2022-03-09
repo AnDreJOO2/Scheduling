@@ -506,35 +506,39 @@ assert ert.twsum() == 69455351
 # ERT > EDD > NoOrdering
 
 
-# from copy import deepcopy
-#
+from copy import deepcopy
+
+
+# Job: self.i = id, self.p = czas wykonania zadania, self.w = w = Waga zadania,  self.r = czas gotowości zadania
+# JobAssigment: self.job = Zadanie, self.start = Czas rozpoczęcia zadania, self.complete = Czas zakończenia zadania
+# Instance: self.jobs = [] - pusta tablica job
+# self.d = d  # Pożądany czas zakończenia zadania
+
+# warunek: czas startu >= czas gotowości
+
 # def HodgesonMoore(instance):
 #     instance = deepcopy(instance)
 #     ### POCZATEK ROZWIAZANIA
-#
-#     schedule = Schedule(instance)
-#     listaZadan = sorted(instance.jobs, key=lambda x: x.d)  # posortowane zadania według rosnącego d (pożądany czas zakończenia)
-#     n = len(listaZadan)
-#
+#     B = EDD(instance)
+#     S = B.assignments
 #     end = False
 #     while end is False:
-#         for i in range(0,n):
-#             if listaZadan[i].d is not None:
+#         for i in S:
+#             if i.job.d is not None:
 #                 end = True
 #                 return end
-#         if listaZadan is None:
+#         if S is None:
 #             end = True
 #             return end
 #
-#         for i in listaZadan:
-#             if listaZadan[i].complete > listaZadan[i].d:
-#                 k = i
-#             break
+#         for j in S:
+#             if j.complete > j.job.d:
+#                 k = j
+#             break;
 #
-#         for i in range(1,k):
-#             schedule.assignments.append(listaZadan[i])
-#             listaZadan.remove(listaZadan[i])
-#
+#         for i in range(1, k):
+#             schedule.assignments.append(i)
+#             S.remove(i)
 #     ### KONIEC ROZWIAZANIA
 #     return schedule
 #
