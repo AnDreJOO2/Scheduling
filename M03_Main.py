@@ -440,9 +440,6 @@ def L(instance):
         schedule.assignments.append(JobAssignment(instancjaJobs[i], pierwszy + 1, times[pierwszy], times[pierwszy] + instancjaJobs[i].p))
         times[pierwszy] += instancjaJobs[i].p
 
-    listaZadan = schedule.assignments
-    for i in range(0, len(listaZadan)):
-        print(listaZadan[i])
     ### KONIEC ROZWIAZANIA
     return schedule
 
@@ -612,25 +609,30 @@ from copy import deepcopy
 def McNaughton(instance):
     instance = deepcopy(instance)
     ### POCZATEK ROZWIAZANIA
+
     schedule = Schedule(instance)
-    pSum = int(sum(map(lambda x: x.p, schedule.instance.jobs)) / schedule.instance.machines)
-    cMax = max(pSum, max(map(lambda x: x.p, schedule.instance.jobs)))
+    listaZadan1 = schedule.instance.jobs
+    n = len(listaZadan1)
+    ileProcesorow1 = schedule.instance.machines
+
     schedule2 = Schedule(instance)
-    consideredJob = len(schedule.instance.jobs)
-    nextStart = 0
+
+    pSum = int(sum(map(lambda x: x.p, listaZadan1)) / ileProcesorow1)
+    cMax = max(pSum, max(map(lambda x: x.p, listaZadan1)))
+
+
     leftover = 0
     unfinished = 0
-    ss = 0
-    s = 0
 
-    for i in range(schedule2.instance.machines):
+    ileProcesorow2 = schedule2.instance.machines
+    for i in range(0, ileProcesorow2):
         ss = 0
         machineFull = False
         if leftover != 0:
             schedule.assignments.append(JobAssignment(unfinished, i + 1, ss, leftover))
             ss += leftover
         for a in schedule2.instance.jobs:
-            if machineFull == False and consideredJob > 0:
+            if machineFull == False and n > 0:
                 if ss + a.p < cMax:
                     schedule.assignments.append(JobAssignment(a, i + 1, ss, ss + a.p))
                     ss += a.p
@@ -641,12 +643,12 @@ def McNaughton(instance):
                     leftover = a.p - (cMax - ss)
                     unfinished = a
                     machineFull = True
-                consideredJob -= 1
+                n -= 1
         for c in range(len(schedule.assignments)):
             if schedule2.instance.jobs.count(schedule.assignments[c].job) != 0:
                 schedule2.instance.jobs.remove(schedule.assignments[c].job)
-            if schedule.instance.jobs.count(schedule.assignments[c].job) == 0:
-                schedule.instance.jobs.append(schedule.assignments[c].job)
+            if listaZadan1.count(schedule.assignments[c].job) == 0:
+                listaZadan1.append(schedule.assignments[c].job)
                 ### KONIEC ROZWIAZANIA
     return schedule
 

@@ -404,14 +404,23 @@ assert schedule.cmax() == 40
 
 #lapt
 
-# from copy import deepcopy
+from copy import deepcopy
 
 # def LAPT(instance):
 #     instance = deepcopy(instance)
 #     ### POCZATEK ROZWIAZANIA
-#     pass
+#
+#     schedule = Schedule(instance)
+#     listaZadan = schedule.instance.jobs
+#
+#     n = len(listaZadan)
+#
+#     for i in range(0, n):
+#         print(listaZadan[i])
+#
 #     ### KONIEC ROZWIAZANIA
 #     return schedule
+#
 #
 # ja = Job("J1", p1=8, p2=3)
 # jb = Job("J2", p1=7, p2=11)
@@ -422,6 +431,41 @@ assert schedule.cmax() == 40
 # instance.jobs = [ja, jb, jc, jd]
 #
 # assert LAPT(instance).cmax() == 31
+#
+# ja = Job("J1", p1=10, p2=23)
+# jb = Job("J2", p1=11, p2=22)
+# jc = Job("J3", p1=12, p2=21)
+# jd = Job("J4", p1=13, p2=20)
+#
+# instance = Instance()
+# instance.jobs = [ja, jb, jc, jd]
+#
+# assert LAPT(instance).cmax() == 86
+# ### BEGIN HIDDEN TESTS
+# ja = Job("J1", p1=3, p2=5)
+# jb = Job("J2", p1=2, p2=4)
+# jc = Job("J3", p1=8, p2=4)
+# jd = Job("J4", p1=1, p2=2)
+#
+# instance = Instance()
+# instance.jobs = [ja, jb, jc, jd]
+#
+# assert LAPT(instance).cmax() == 16
+#
+# ja = Job("J1", p1=1, p2=1)
+# jb = Job("J2", p1=2, p2=2)
+# jc = Job("J3", p1=3, p2=3)
+# jd = Job("J4", p1=4, p2=4)
+# je = Job("J5", p1=5, p2=5)
+# jf = Job("J6", p1=6, p2=6)
+#
+# instance = Instance()
+# instance.jobs = [ja, jb, jc, jd, je, jf]
+#
+# assert LAPT(instance).cmax() == 21
+#
+#
+# ### END HIDDEN TESTS
 
 
 # Systemy typu flow shop
@@ -510,6 +554,115 @@ schedule.assignments = [
 ]
 
 assert schedule.isFeasible() == False
+### END HIDDEN TESTS
+
+#Algorytm Johnsona
+
+from copy import deepcopy
+
+
+def Johnson(instance):
+    instance = deepcopy(instance)
+    ### POCZATEK ROZWIAZANIA
+
+    schedule = Schedule(instance)
+    listaZadan = schedule.instance.jobs
+
+    n = len(listaZadan)
+
+    P = []
+    R = []
+
+    # 1 krok
+    for i in range(0, n):
+        if listaZadan[i].p1 < listaZadan[i].p2:
+            P.append(listaZadan[i])
+        else:
+            R.append(listaZadan[i])
+
+    # # 2 krok
+    A = sorted(P, key=lambda p: p.p1) # B = porortowana lista od najkrotszych p1
+
+    # # 3 krok
+    B = sorted(R, key=lambda r: r.p2, reverse=True) # B = porortowana lista od najdluzszych p2
+
+    # 4 krok
+    start_zadania = 0
+
+    #Dodawanie zadan do P1 z listy A
+    for i in range(0,len(A)):
+        complete = start_zadania + A[i].p1
+        schedule.assignments.append(JobAssignment(A[i], 1, start_zadania, complete))
+        start_zadania = complete
+
+    # Dodawanie zadan do P1 z listy B
+    for i in range(0,len(B)):
+        complete = start_zadania + B[i].p1
+        schedule.assignments.append(JobAssignment(B[i], 1, start_zadania, complete))
+        start_zadania = complete
+
+    listaZadan = schedule.assignments
+
+    start_zadania = 0
+    # Dodawanie zadan do P2 z listy A
+    for i in range(0, len(A)):
+        if listaZadan[i].complete > start_zadania:
+            start_zadania = listaZadan[i].complete
+        complete = start_zadania + A[i].p2
+        schedule.assignments.append(JobAssignment(A[i], 2, start_zadania, complete))
+        start_zadania = complete
+
+    # Dodawanie zadan do P2 z listy B
+    for i in range(0, len(B)):
+        n = len(A)
+        if listaZadan[i+n].complete > start_zadania:
+            start_zadania = listaZadan[i+n].complete
+        complete = start_zadania + B[i].p2
+        schedule.assignments.append(JobAssignment(B[i], 2, start_zadania, complete))
+        start_zadania = complete
+
+    ### KONIEC ROZWIAZANIA
+    return schedule
+
+ja = Job("J1", p1=1, p2=2)
+jb = Job("J2", p1=3, p2=2)
+jc = Job("J3", p1=2, p2=3)
+jd = Job("J4", p1=4, p2=4)
+je = Job("J5", p1=6, p2=1)
+jf = Job("J6", p1=2, p2=1)
+jg = Job("J7", p1=1, p2=2)
+jh = Job("J8", p1=2, p2=3)
+
+instance = Instance()
+instance.jobs = [ja, jb, jc, jd, je, jf, jg, jh]
+
+assert Johnson(instance).cmax() == 22
+
+ja = Job("J1", p1=3, p2=2)
+jb = Job("J2", p1=2, p2=3)
+jc = Job("J3", p1=4, p2=3)
+jd = Job("J4", p1=1, p2=2)
+je = Job("J5", p1=1, p2=1)
+jf = Job("J6", p1=1, p2=1)
+
+instance = Instance()
+instance.jobs = [ja, jb, jc, jd, je, jf]
+
+assert Johnson(instance).cmax() == 14
+### BEGIN HIDDEN TESTS
+ja = Job("J1", p1=1, p2=2)
+jb = Job("J2", p1=5, p2=8)
+jc = Job("J3", p1=4, p2=7)
+jd = Job("J4", p1=7, p2=11)
+je = Job("J5", p1=8, p2=4)
+jf = Job("J6", p1=11, p2=2)
+jg = Job("J7", p1=2, p2=5)
+jh = Job("J8", p1=4, p2=3)
+
+instance = Instance()
+instance.jobs = [ja, jb, jc, jd, je, jf, jg, jh]
+
+assert Johnson(instance).cmax() == 44
 ### END HIDDEN TESTS
 
 print("Wszystko działa")

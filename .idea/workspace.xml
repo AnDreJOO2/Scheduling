@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c90837ff-75e4-482f-845f-cbe771c25afd" name="Changes" comment="M02B_Main.py = Strategie NoOrdering, EDD i ERT,&#10;Dodatkowe funkcje celu: lmax, usum, uwsum, tsum, twsum">
+    <list default="true" id="c90837ff-75e4-482f-845f-cbe771c25afd" name="Changes" comment="M04_Main.py = isFeasible, funkcja celu&#10;Flow Shop = isFeasible">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/M02B_Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/M02B_Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/M03_Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/M03_Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/M04_Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/M04_Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Notatnik" beforeDir="false" afterPath="$PROJECT_DIR$/Notatnik" afterDir="false" />
     </list>
@@ -22,7 +22,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="pierwszy" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -44,7 +44,9 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="25UB0te6fWzl2fBzBDNu3DP3Umq" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -235,7 +237,9 @@
       <workItem from="1646651326595" duration="16421000" />
       <workItem from="1646677328816" duration="9032000" />
       <workItem from="1646744391314" duration="25204000" />
-      <workItem from="1646779820733" duration="6310000" />
+      <workItem from="1646779820733" duration="12085000" />
+      <workItem from="1646824195529" duration="11523000" />
+      <workItem from="1646860888797" duration="6195000" />
     </task>
     <task id="LOCAL-00001" summary="Ok">
       <created>1646507351705</created>
@@ -258,7 +262,14 @@
       <option name="project" value="LOCAL" />
       <updated>1646689057686</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="M04_Main.py = isFeasible, funkcja celu&#10;Flow Shop = isFeasible">
+      <created>1646791561038</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1646791561038</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,37 +289,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ok" />
     <MESSAGE value="M02B_Main.py = Strategie NoOrdering, EDD i ERT,&#10;Dodatkowe funkcje celu: lmax, usum, uwsum, tsum, twsum" />
-    <option name="LAST_COMMIT_MESSAGE" value="M02B_Main.py = Strategie NoOrdering, EDD i ERT,&#10;Dodatkowe funkcje celu: lmax, usum, uwsum, tsum, twsum" />
+    <MESSAGE value="M04_Main.py = isFeasible, funkcja celu&#10;Flow Shop = isFeasible" />
+    <option name="LAST_COMMIT_MESSAGE" value="M04_Main.py = isFeasible, funkcja celu&#10;Flow Shop = isFeasible" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/M03_Main.py</url>
-          <line>462</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/M03_Main.py</url>
-          <line>439</line>
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/M04_Main.py</url>
-          <line>430</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/M04_Main.py</url>
-          <line>511</line>
-          <option name="timeStamp" value="38" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/M04_Main.py</url>
-          <line>473</line>
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -327,9 +312,9 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Scheduling$main.coverage" NAME="main Coverage Results" MODIFIED="1645605513877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M02B_Main.coverage" NAME="M02B_Main Coverage Results" MODIFIED="1646785067624" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Scheduling$M03_Main.coverage" NAME="M03_Main Coverage Results" MODIFIED="1646785528853" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Scheduling$M03_Main.coverage" NAME="M03_Main Coverage Results" MODIFIED="1646875302077" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M02A_Main.coverage" NAME="M02A_Main Coverage Results" MODIFIED="1646436402216" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Scheduling$M04_Main.coverage" NAME="M04_Main Coverage Results" MODIFIED="1646791399328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Scheduling$M04_Main.coverage" NAME="M04_Main Coverage Results" MODIFIED="1646871040529" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M01_Main.coverage" NAME="M01_Main Coverage Results" MODIFIED="1646576564548" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
