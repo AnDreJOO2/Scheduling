@@ -259,6 +259,7 @@ class Schedule(Schedule):
             if listaZadan[i].complete > listaZadan[i].job.d:
                 ile_spoznien += 1
 
+        print(ile_spoznien)
         return ile_spoznien
 
         ### KONIEC ROZWIAZANIA
@@ -509,53 +510,167 @@ assert ert.twsum() == 69455351
 from copy import deepcopy
 
 
-# Job: self.i = id, self.p = czas wykonania zadania, self.w = w = Waga zadania,  self.r = czas gotowości zadania
-# JobAssigment: self.job = Zadanie, self.start = Czas rozpoczęcia zadania, self.complete = Czas zakończenia zadania
-# Instance: self.jobs = [] - pusta tablica job
-# self.d = d  # Pożądany czas zakończenia zadania
+
 
 # warunek: czas startu >= czas gotowości
+#Algorytm Hodgesona-Moore'a
 
-# def HodgesonMoore(instance):
+from copy import deepcopy
+
+#     # Job: self.i = id, self.p = czas wykonania zadania, self.w = w = Waga zadania,  self.r = czas gotowości zadania, self.d = d  # Pożądany czas zakończenia zadania
+#     # JobAssigment: self.job = Zadanie, self.start = Czas rozpoczęcia zadania, self.complete = Czas zakończenia zadania
+#     # Instance: self.jobs = [] - pusta tablica job
+
+def HodgesonMoore(instance):
+    instance = deepcopy(instance)
+    ### POCZATEK ROZWIAZANIA
+
+    S = EDD(instance)
+    n = len(S.assignments)
+
+    for i in range(0, n):
+        if S.csum() == 0 or S.usum() == 0 :
+            return S
+
+        for j in range(0, n):
+            if S.assignments[j].complete > S.assignments[j].job.d:
+                k = j
+                break
+
+        longestJob = S.assignments[0]
+        for j in S.assignments[1:k+1]:
+            if longestJob.job.p < j.job.p:
+                longestJob = j
+        instancjaJobs = S.instance.jobs
+        instancjaJobs.remove(longestJob.job)
+        instancjaJobs.append(longestJob.job)
+
+        S.assignments.clear()
+
+        czas = 0
+        for j in range(0,len(instancjaJobs)):
+            if czas < instancjaJobs[j].r:
+                czas = instancjaJobs[j].r
+            S.assignments.append(JobAssignment(instancjaJobs[j], czas, czas + instancjaJobs[j].p))
+            czas += instancjaJobs[j].p
+
+    schedule = S
+    ### KONIEC ROZWIAZANIA
+    return schedule
+
+
+random.seed(1234567890)  # Ustaw ziarno generatora na stałe, aby wyniki były przewidywalne
+
+instance = Instance()
+instance.generate(100, 1, 100)  # Wygeneruj 100 zadań o czasach wykonywania z przedziału od 1 do 100
+
+# Każdemu z zadań przypisz losowy pożądany czas zakończenia
+for i in instance.jobs:
+    i.d = random.randint(50, 200)
+
+edd = EDD(instance)
+hm = HodgesonMoore(instance)
+
+assert hm.usum() == 82
+assert edd.usum() == 99
+### BEGIN HIDDEN TESTS
+random.seed(1234567890)
+
+instance = Instance()
+instance.generate(200, 1, 200)
+
+for i in instance.jobs:
+    i.d = random.randint(120, 1500)
+
+hm = HodgesonMoore(instance)
+assert hm.usum() == 147
+
+instance = Instance()
+instance.generate(20, 1, 10)
+
+for i in instance.jobs:
+    i.d = random.randint(10, 80)
+
+hm = HodgesonMoore(instance)
+assert hm.usum() == 4
+
+instance = Instance()
+instance.generate(20, 1, 1)
+
+for i in instance.jobs:
+    i.d = 0
+
+hm = HodgesonMoore(instance)
+assert hm.usum() == 20
+### END HIDDEN TESTS
+
+
+#Lawler
+#
+# class Job(Job):
+#     # Konstruktor
+#     def __init__(self, i, p=1, w=1, r=0, d=0, f=lambda x: x):
+#         super().__init__(i, p, w, r, d)
+#         assert(callable(f))
+#         self.f = f # Funkcja kosztu
+#
+# J = Job("J", p=10, f=lambda x: 2*x + 7)
+# print(J.f(5))
+# print(J.f(10))
+# print(J.f(15))
+#
+# class Schedule(Schedule):
+#     def fmax(self):
+#         assert self.isFeasible() == True
+#         ### POCZATEK ROZWIAZANIA
+#
+#
+#
+#         ### KONIEC ROZWIAZANIA
+#
+# from copy import deepcopy
+#
+# def Lawler(instance):
 #     instance = deepcopy(instance)
 #     ### POCZATEK ROZWIAZANIA
-#     B = EDD(instance)
-#     S = B.assignments
-#     end = False
-#     while end is False:
-#         for i in S:
-#             if i.job.d is not None:
-#                 end = True
-#                 return end
-#         if S is None:
-#             end = True
-#             return end
 #
-#         for j in S:
-#             if j.complete > j.job.d:
-#                 k = j
-#             break;
+#     schedule = Schedule(instance)
 #
-#         for i in range(1, k):
-#             schedule.assignments.append(i)
-#             S.remove(i)
+#     listaZadan = instance.jobs
+#     n = len(listaZadan)
+#
+#     for i in range(0, n):
+#         print(listaZadan[i])
+#
 #     ### KONIEC ROZWIAZANIA
 #     return schedule
 #
-#
-# random.seed(1234567890)  # Ustaw ziarno generatora na stałe, aby wyniki były przewidywalne
+# ja = Job("J1", p=1, f=lambda c: c*c*c)
+# jb = Job("J2", p=7, f=lambda c: 3*c + 17)
+# jc = Job("J3", p=5, f=lambda c: 3*c*c)
+# jd = Job("J4", p=2, f=lambda c: 2*c*c + 6*c + 2)
 #
 # instance = Instance()
-# instance.generate(100, 1, 100)  # Wygeneruj 100 zadań o czasach wykonywania z przedziału od 1 do 100
+# instance.jobs = [ja, jb, jc, jd]
 #
-# # Każdemu z zadań przypisz losowy pożądany czas zakończenia
-# for i in instance.jobs:
-#     i.d = random.randint(50, 200)
+# no = NoOrdering(instance)
+# law = Lawler(instance)
 #
-# edd = EDD(instance)
-# hm = HodgesonMoore(instance)
+# assert no.fmax() == 542
+# assert law.fmax() == 178
+# ### BEGIN HIDDEN TESTS
+# from math import sqrt
+# ja = Job("J1", p=1, f=lambda c: 2*c - 30)
+# jb = Job("J2", p=7, f=lambda c: 3*c*c + 2*c - 10)
+# jc = Job("J3", p=5, f=lambda c: 3*c*(c - 1))
+# jd = Job("J4", p=2, f=lambda c: sqrt(c))
+# je = Job("J5", p=2, f=lambda c: 2*c*c + 6*sqrt(2*c))
 #
-# assert hm.usum() == 82
-# assert edd.usum() == 99
+# instance = Instance()
+# instance.jobs = [ja, jb, jc, jd, je]
+#
+# law = Lawler(instance)
+# assert law.fmax() > 423.74 and law.fmax() < 424
+# ### END HIDDEN TESTS
 
 print("Wszystko działa")
