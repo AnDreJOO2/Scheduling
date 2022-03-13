@@ -623,7 +623,7 @@ def McNaughton(instance):
     cMax = max(pSum, max(map(lambda x: x.p, instacjaJobs))) # max complete, długosc uszeregowania
 
     czasZakonczenia = 0
-    unfinished = 0
+    notDoneYet = 0
 
     ileProcesorow2 = drugieSzeregowanie.instance.machines
 
@@ -633,29 +633,37 @@ def McNaughton(instance):
         machineFull = False
 
         if czasZakonczenia != 0:
-            schedule.assignments.append(JobAssignment(unfinished, i + 1, czas, czasZakonczenia))
+            schedule.assignments.append(JobAssignment(notDoneYet, i + 1, czas, czasZakonczenia))
             czas += czasZakonczenia
 
         joby2Szeregowanie = drugieSzeregowanie.instance.jobs
+
         for j in range(0, len(joby2Szeregowanie)):
             if machineFull == False and n > 0:
-                if czas + joby2Szeregowanie[j].p< cMax:
+
+                if czas + joby2Szeregowanie[j].p < cMax:
                     schedule.assignments.append(JobAssignment(joby2Szeregowanie[j], i + 1, czas, czas + joby2Szeregowanie[j].p))
                     czas += joby2Szeregowanie[j].p
+
                 elif czas + joby2Szeregowanie[j].p == cMax:
                     schedule.assignments.append(JobAssignment(joby2Szeregowanie[j], i + 1, czas, czas + joby2Szeregowanie[j].p))
+
                 elif czas + joby2Szeregowanie[j].p > cMax and czas < cMax:
                     schedule.assignments.append(JobAssignment(joby2Szeregowanie[j], i + 1, czas, cMax))
                     czasZakonczenia = joby2Szeregowanie[j].p - (cMax - czas)
-                    unfinished = joby2Szeregowanie[j]
+                    notDoneYet = joby2Szeregowanie[j]
                     machineFull = True
-                n -= 1
-        for k in range(len(schedule.assignments)):
+                n = n - 1
+
+        for k in range(0, len(schedule.assignments)):
             if joby2Szeregowanie.count(schedule.assignments[k].job) != 0:
                 joby2Szeregowanie.remove(schedule.assignments[k].job)
+
             if instacjaJobs.count(schedule.assignments[k].job) == 0:
                 instacjaJobs.append(schedule.assignments[k].job)
+
                 ### KONIEC ROZWIAZANIA
+
     return schedule
 
 ja = Job("J1", p=10)
