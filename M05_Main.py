@@ -72,7 +72,8 @@ class Instance:
             next(plots)  # Pomija nagłówek pliku csv
             for row in plots:
                 index = len(self.jobs) + 1
-                if int(row[0]) == 0 or int(row[1]) == 0 or int(row[1]) > 140509184: #pomija jeśli zadanie ma czas == 0 lub ram > 134GB
+                maxMemoryLimit = 140509184
+                if int(row[0]) == 0 or int(row[1]) == 0 or int(row[1]) > maxMemoryLimit: #pomija jeśli zadanie ma czas == 0 lub ram > 134GB
                     continue;
                 else:
                     self.jobs.append(Job(f"J{index}", int(row[0]), int(row[1])))
@@ -86,7 +87,8 @@ class Instance:
 
         self.jobs.clear()
 
-        for _ in range(5000):
+        data = 64 #ile danych wczytać
+        for _ in range(data):
             rand = random.randint(1, len(self.jobsShuffled)) #losowo wybiera 5000 zadań
             self.jobs.append(self.jobsShuffled[rand])
             self.jobsShuffled.remove(self.jobsShuffled[rand])
@@ -204,12 +206,34 @@ class JobAssignment:
         return f"{self.job} ~ P{self.machine}[{self.start}; {self.complete})"
 
 
-def RND(instance):
+def RND(instance): # zgodnie z którą zadania są przydzielane do rdzeni w kolejności losowej
     # instance = deepcopy(instance)
     schedule = Schedule(instance)
 
     cores = schedule.instance.machines # 16 rdzeni
     machines = [0] * cores  # tworzenie macierzy z 16 rdzeniami
+
+    for job in schedule.instance.jobs:
+        core = random.randint(0,cores-1)
+
+
+        machine = core + 1  # indeksujemy rdzenie od 1
+        start = machines[core]
+        complete = machines[core] + job.p
+
+        schedule.assignments.append(JobAssignment(job, machine, start, complete)) # dodanei zadania do szeregowania
+
+        machines[core] += job.p
+    return schedule
+
+def LMR(instance): # zgodnie z którą zadania są przydzielane do rdzeni począwszy od tego o najmniejszym zapotrzebowaniu na pamięć
+    # instance = deepcopy(instance)
+    schedule = Schedule(instance)
+
+    cores = schedule.instance.machines # 16 rdzeni
+    machines = [0] * cores  # tworzenie macierzy z 16 rdzeniami
+
+    sorted(schedule.instance.jobs, key=lambda x: x.w)
 
     for job in schedule.instance.jobs:
         core = 0  # wybrany rdzeń
@@ -222,11 +246,74 @@ def RND(instance):
         start = machines[core]
         complete = machines[core] + job.p
 
-        schedule.assignments.append(JobAssignment(job, machine, start, complete)) # dodanei zadania do szeregowania
+        schedule.assignments.append(JobAssignment(job, machine, start, complete)) # dodanie zadania do szeregowania
 
         machines[core] += job.p
     return schedule
 
+def HMR(instance): # zgodnie z którą zadania są przydzielane do rdzeni począwszy od tego o największym zapotrzebowaniu na pamięć
+    # instance = deepcopy(instance)
+    schedule = Schedule(instance)
+
+    cores = schedule.instance.machines # 16 rdzeni
+    machines = [0] * cores  # tworzenie macierzy z 16 rdzeniami
+
+    sorted(schedule.instance.jobs, key=lambda x: x.w, reverse=True)
+
+    for job in schedule.instance.jobs:
+        core = 0  # wybrany rdzeń
+
+        for machine in range(0, cores):  # szuka rdzenia, który wykona zadanie najszybciej
+            if machines[machine] < machines[core]:
+                core = machine
+
+        machine = core + 1  # indeksujemy rdzenie od 1
+        start = machines[core]
+        complete = machines[core] + job.p
+
+        schedule.assignments.append(JobAssignment(job, machine, start, complete)) # dodanie zadania do szeregowania
+
+        machines[core] += job.p
+    return schedule
+
+def LPT(instance): # zgodnie z którą zadania są przydzielane do rdzeni począwszy od tego o największym zapotrzebowaniu na czas
+    ### POCZATEK ROZWIAZANIA
+
+    schedule = Schedule(instance)
+    listaZadan = schedule.instance.jobs
+
+    listaZadan.sort(reverse=True, key=lambda x: x.p) #sortowanie zadan według malejącego p
+    n = len(listaZadan)
+
+    machines = schedule.instance.machines #dostępne procesory
+
+    times = [0] * machines #w zależności ile jest procesorow, na początku czas wszystkich ustawia na 0, tablica wyników z czasem dla każdego procesora
+
+    value = 0
+    for i in range(0,n):
+
+        pierwszy = 0
+        for j in range(0,machines):
+            if times[j] < times[pierwszy]:
+                pierwszy = j
+        schedule.assignments.append(JobAssignment(listaZadan[i], pierwszy + 1, times[pierwszy], times[pierwszy] + listaZadan[i].p))
+        times[pierwszy] += listaZadan[i].p
+        value += times[pierwszy]
+
+    ### KONIEC ROZWIAZANIA
+    return schedule
+
+def ALFA(instance): #Strategia listowa
+    schedule = Schedule(instance)
+
+
+    return schedule
+
+
+def BETA(instance): #Strategia listowa
+    schedule = Schedule(instance)
+
+    return schedule
 
 
 random.seed(1234567890) #losowść
@@ -236,10 +323,46 @@ instanceProblem.getInstanceProblem()
 
 
 scheduleRDN = RND(instanceProblem)
+scheduleLMR = LMR(instanceProblem)
+scheduleHMR = HMR(instanceProblem)
+scheduleLPT = LPT(instanceProblem)
+
 assert scheduleRDN.isFeasible() == True
+assert scheduleLMR.isFeasible() == True
+assert scheduleHMR.isFeasible() == True
+assert scheduleLPT.isFeasible() == True
 # print("maksymalny czas zakończenia", scheduleRDN.cmax())
 # print("suma czasów zakończenia zadań", scheduleRDN.csum())
-# print("ważona suma czasów zakończenia zadań", scheduleRDN.cwsum())
 
+print("--------------------")
+print("scheduleRDN")
 for i in scheduleRDN.assignments:
     print(i)
+print("--------------------")
+print("scheduleLMR")
+for i in scheduleLMR.assignments:
+    print(i)
+print("--------------------")
+print("scheduleHMR")
+for i in scheduleHMR.assignments:
+    print(i)
+print("--------------------")
+print("scheduleHMR")
+for i in scheduleLPT.assignments:
+    print(i)
+print("--------------------")
+print()
+print("ważona suma czasów zakończenia zadań scheduleRDN", scheduleRDN.cwsum())
+print("Suma czasów zakończenia zadań scheduleRDN", scheduleRDN.csum())
+print("Maksymalny czas zakończenia scheduleRDN", scheduleRDN.cmax())
+print("Maksymalny czas zakończenia scheduleLPT", scheduleLPT.cmax())
+print()
+print("ważona suma czasów zakończenia zadań scheduleLMR", scheduleLMR.cwsum())
+print("Suma czasów zakończenia zadań scheduleLMR", scheduleLMR.csum())
+print("Maksymalny czas zakończenia scheduleLMR", scheduleLMR.cmax())
+print("Maksymalny czas zakończenia scheduleLPT", scheduleLPT.cmax())
+print()
+print("ważona suma czasów zakończenia zadań scheduleHMR", scheduleHMR.cwsum())
+print("Suma czasów zakończenia zadań scheduleHMR", scheduleHMR.csum())
+print("Maksymalny czas zakończenia scheduleHMR", scheduleHMR.cmax())
+print("Maksymalny czas zakończenia scheduleLPT", scheduleLPT.cmax())
