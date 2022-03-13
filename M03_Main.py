@@ -611,47 +611,52 @@ def McNaughton(instance):
     ### POCZATEK ROZWIAZANIA
 
     pierwszeSzeregowanie = Schedule(instance)
-    instacjaJobs = pierwszeSzeregowanie.instance.jobs
+    schedule = pierwszeSzeregowanie
+    instacjaJobs = schedule.instance.jobs
 
     n = len(instacjaJobs)
 
-    ileProcesorow1 = pierwszeSzeregowanie.instance.machines
+    ileProcesorow1 = schedule.instance.machines
 
     drugieSzeregowanie = Schedule(instance)
     pSum = int(sum(map(lambda x: x.p, instacjaJobs)) / ileProcesorow1) # suma p / ile procesorow
-    cMax = max(pSum, max(map(lambda x: x.p, instacjaJobs))) # max complete
+    cMax = max(pSum, max(map(lambda x: x.p, instacjaJobs))) # max complete, długosc uszeregowania
 
-    leftover = 0
+    czasZakonczenia = 0
     unfinished = 0
 
     ileProcesorow2 = drugieSzeregowanie.instance.machines
-    for i in range(0, ileProcesorow2):
+
+    for i in range(0, ileProcesorow2): #szeregowanie dla każdego procesora
 
         czas = 0
         machineFull = False
-        if leftover != 0:
-            pierwszeSzeregowanie.assignments.append(JobAssignment(unfinished, i + 1, czas, leftover))
-            czas += leftover
-        for a in drugieSzeregowanie.instance.jobs:
+
+        if czasZakonczenia != 0:
+            schedule.assignments.append(JobAssignment(unfinished, i + 1, czas, czasZakonczenia))
+            czas += czasZakonczenia
+
+        joby2Szeregowanie = drugieSzeregowanie.instance.jobs
+        for j in range(0, len(joby2Szeregowanie)):
             if machineFull == False and n > 0:
-                if czas + a.p < cMax:
-                    pierwszeSzeregowanie.assignments.append(JobAssignment(a, i + 1, czas, czas + a.p))
-                    czas += a.p
-                elif czas + a.p == cMax:
-                    pierwszeSzeregowanie.assignments.append(JobAssignment(a, i + 1, czas, czas + a.p))
-                elif czas + a.p > cMax and czas < cMax:
-                    pierwszeSzeregowanie.assignments.append(JobAssignment(a, i + 1, czas, cMax))
-                    leftover = a.p - (cMax - czas)
-                    unfinished = a
+                if czas + joby2Szeregowanie[j].p< cMax:
+                    schedule.assignments.append(JobAssignment(joby2Szeregowanie[j], i + 1, czas, czas + joby2Szeregowanie[j].p))
+                    czas += joby2Szeregowanie[j].p
+                elif czas + joby2Szeregowanie[j].p == cMax:
+                    schedule.assignments.append(JobAssignment(joby2Szeregowanie[j], i + 1, czas, czas + joby2Szeregowanie[j].p))
+                elif czas + joby2Szeregowanie[j].p > cMax and czas < cMax:
+                    schedule.assignments.append(JobAssignment(joby2Szeregowanie[j], i + 1, czas, cMax))
+                    czasZakonczenia = joby2Szeregowanie[j].p - (cMax - czas)
+                    unfinished = joby2Szeregowanie[j]
                     machineFull = True
                 n -= 1
-        for c in range(len(pierwszeSzeregowanie.assignments)):
-            if drugieSzeregowanie.instance.jobs.count(pierwszeSzeregowanie.assignments[c].job) != 0:
-                drugieSzeregowanie.instance.jobs.remove(pierwszeSzeregowanie.assignments[c].job)
-            if instacjaJobs.count(pierwszeSzeregowanie.assignments[c].job) == 0:
-                instacjaJobs.append(pierwszeSzeregowanie.assignments[c].job)
+        for k in range(len(schedule.assignments)):
+            if joby2Szeregowanie.count(schedule.assignments[k].job) != 0:
+                joby2Szeregowanie.remove(schedule.assignments[k].job)
+            if instacjaJobs.count(schedule.assignments[k].job) == 0:
+                instacjaJobs.append(schedule.assignments[k].job)
                 ### KONIEC ROZWIAZANIA
-    return pierwszeSzeregowanie
+    return schedule
 
 ja = Job("J1", p=10)
 jb = Job("J2", p=10)
