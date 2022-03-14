@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c90837ff-75e4-482f-845f-cbe771c25afd" name="Changes" comment="Projekt - -M05_Main, Podział na pliki, wersja się kompiluje">
-      <change afterPath="$PROJECT_DIR$/Projekt/README.md" afterDir="false" />
+    <list default="true" id="c90837ff-75e4-482f-845f-cbe771c25afd" name="Changes" comment="Projekt - -M05_Main, update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Projekt/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Projekt/Pliki/Modele.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Pliki/Modele.py" afterDir="false" />
@@ -255,7 +254,8 @@
       <workItem from="1646917122831" duration="27959000" />
       <workItem from="1646986900267" duration="30742000" />
       <workItem from="1647166702085" duration="6492000" />
-      <workItem from="1647265979155" duration="9933000" />
+      <workItem from="1647265979155" duration="17243000" />
+      <workItem from="1647296367562" duration="3127000" />
     </task>
     <task id="LOCAL-00001" summary="Ok">
       <created>1646507351705</created>
@@ -320,7 +320,14 @@
       <option name="project" value="LOCAL" />
       <updated>1647271815166</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Projekt - -M05_Main, update">
+      <created>1647281375825</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1647281375825</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -347,7 +354,8 @@
     <MESSAGE value="M05_Main.py = szablon funkcji RDN, LMR, HMR, LPT, ALFA, BETA" />
     <MESSAGE value="M03_Main.py = McNaughton" />
     <MESSAGE value="Projekt - -M05_Main, Podział na pliki, wersja się kompiluje" />
-    <option name="LAST_COMMIT_MESSAGE" value="Projekt - -M05_Main, Podział na pliki, wersja się kompiluje" />
+    <MESSAGE value="Projekt - -M05_Main, update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Projekt - -M05_Main, update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -368,10 +376,11 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Scheduling$main.coverage" NAME="main Coverage Results" MODIFIED="1645605513877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Scheduling$Main.coverage" NAME="Main Coverage Results" MODIFIED="1647299443414" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Projekt" />
     <SUITE FILE_PATH="coverage/Scheduling$M02B_Main.coverage" NAME="M02B_Main Coverage Results" MODIFIED="1646996732650" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M03_Main.coverage" NAME="M03_Main Coverage Results" MODIFIED="1647184133150" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M02A_Main.coverage" NAME="M02A_Main Coverage Results" MODIFIED="1646436402216" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Scheduling$main__1_.coverage" NAME="Main Coverage Results" MODIFIED="1647281223569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Projekt" />
+    <SUITE FILE_PATH="coverage/Scheduling$main__1_.coverage" NAME="Main Coverage Results" MODIFIED="1647290274680" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Projekt" />
     <SUITE FILE_PATH="coverage/Scheduling$M04_Main.coverage" NAME="M04_Main Coverage Results" MODIFIED="1647280272822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M01_Main.coverage" NAME="M01_Main Coverage Results" MODIFIED="1646576564548" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M05_Main.coverage" NAME="M05_Main Coverage Results" MODIFIED="1647179572384" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

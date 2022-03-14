@@ -17,9 +17,9 @@ def RND(instance):
     job_index = 0
     job = jobs[job_index]
 
-    machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
+    machine_index = Operacje.findLowestCMAXMachine(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.checkUsedMemory(assignments_running_now)
 
     if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
@@ -64,9 +64,9 @@ def LPT(instance):
     job_index = 0
     job = jobs[job_index]
 
-    machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
+    machine_index = Operacje.findLowestCMAXMachine(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.checkUsedMemory(assignments_running_now)
 
     if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
@@ -111,9 +111,9 @@ def LMR(instance):
     job_index = 0
     job = jobs[job_index]
 
-    machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
+    machine_index = Operacje.findLowestCMAXMachine(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.checkUsedMemory(assignments_running_now)
 
     if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
@@ -158,9 +158,9 @@ def HMR(instance):
     job_index = 0
     job = jobs[job_index]
 
-    machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
+    machine_index = Operacje.findLowestCMAXMachine(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.checkUsedMemory(assignments_running_now)
 
     if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
@@ -205,9 +205,9 @@ def ALFA(instance):
     job_index = 0
     job = jobs[job_index]
 
-    machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
+    machine_index = Operacje.findLowestCMAXMachine(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.checkUsedMemory(assignments_running_now)
 
     if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
@@ -252,9 +252,9 @@ def BETA(instance):
     job_index = 0
     job = jobs[job_index]
 
-    machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
+    machine_index = Operacje.findLowestCMAXMachine(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.checkUsedMemory(assignments_running_now)
 
     if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)

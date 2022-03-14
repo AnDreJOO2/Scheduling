@@ -58,6 +58,15 @@ class Schedule:
         self.ram = 140509184  # 140509184KB /1024/1024 =  134 GB
 
     def isFeasible(self):
+        listaZadan = self.assignments
+        n = len(listaZadan)
+
+        # Sprawdzenie czy id istnieje w jobs
+        instacjaJobs = self.instance.jobs
+        a = len(instacjaJobs)
+        listaId = []
+        for i in range(0, a):
+            listaId.append(instacjaJobs[i].i)
 
         #Sprawdzenie czy id istnieje w jobs
         unique_keys = [job.i for job in self.instance.jobs]
@@ -74,17 +83,13 @@ class Schedule:
             else:
                 machines[key] = [assignment]
 
-
-        # W danej chwili, na danym procesorze, wykonuje się co najwyżej jedno zadanie
-        values = []
-        for key in machines:
-            values.append(machines[key])
-        for machine in values:
-            for a in machine:
-                for aa in machine:
-                    if a.job != aa.job:
-                        if max(a.start, aa.start) < min(a.complete, aa.complete):
-                            return False
+        # W danej chwili, na danym procesorze, wykonuje się co najwyżej jedno zadanie.
+        for i in range(0, n - 1):
+            for j in range(i + 1, n):
+                if listaZadan[i].machine == listaZadan[j].machine:
+                    zakres = range(listaZadan[i].start + 1, listaZadan[i].complete)
+                    if listaZadan[j].start in zakres or listaZadan[j].complete in zakres:
+                        return False
 
         # Na procesorach wykonują się tylko te zadania, które zostały opisane w instancji problemu.
         if len(self.assignments) != len(self.instance.jobs):
@@ -96,11 +101,13 @@ class Schedule:
                 return False
 
         # To samo zadanie nie wykonuje się jednocześnie na więcej niż jednym procesorze.
-        for a in self.assignments:
-            for aa in self.assignments:
-                if a.job == aa.job and a.machine != aa.machine:
-                    if max(a.start, aa.start) < min(a.complete, aa.complete):
-                        return False
+        for i in range(0, n - 1):
+            for j in range(i + 1, n):
+                if listaZadan[i].job.i == listaZadan[j].job.i:
+                    if listaZadan[i].machine != listaZadan[j].machine:
+                        zakres = range(listaZadan[i].start + 1, listaZadan[i].complete)
+                        if listaZadan[j].start in zakres or listaZadan[j].complete in zakres:
+                            return False
 
         jobs = {}
         for assignment in self.assignments:
