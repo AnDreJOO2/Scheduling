@@ -19,15 +19,15 @@ def RND(instance):
 
     machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.memory - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
 
-    if available_memory >= job.mr:
+    if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
       machines[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
     else:
       assigned = False
       for i in range(1, len(jobs)):
-        if available_memory >= jobs[i].mr:
+        if available_memory >= jobs[i].w:
           job_index = i
           start_time = Operacje.getStartTime(machines, machine_index)
           machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -36,10 +36,10 @@ def RND(instance):
 
       if assigned == False:
         for assignment_by_complete_time in sorted(assignments_running_now, key=lambda x: x.complete):
-          available_memory += assignment_by_complete_time.job.mr
+          available_memory += assignment_by_complete_time.job.w
           is_assigned = False
           for i in range(len(jobs)):
-            if available_memory >= jobs[i].mr:
+            if available_memory >= jobs[i].w:
               job_index = i
               start_time = assignment_by_complete_time.complete
               machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -66,15 +66,15 @@ def LPT(instance):
 
     machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.memory - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
 
-    if available_memory >= job.mr:
+    if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
       machines[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
     else:
       assigned = False
       for i in range(1, len(jobs)):
-        if available_memory >= jobs[i].mr:
+        if available_memory >= jobs[i].w:
           job_index = i
           start_time = Operacje.getStartTime(machines, machine_index)
           machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -83,10 +83,10 @@ def LPT(instance):
 
       if assigned == False:
         for assignment_by_complete_time in sorted(assignments_running_now, key=lambda x: x.complete):
-          available_memory += assignment_by_complete_time.job.mr
+          available_memory += assignment_by_complete_time.job.w
           is_assigned = False
           for i in range(len(jobs)):
-            if available_memory >= jobs[i].mr:
+            if available_memory >= jobs[i].w:
               job_index = i
               start_time = assignment_by_complete_time.complete
               machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -104,7 +104,7 @@ def LPT(instance):
 def LMR(instance):
   instance = deepcopy(instance)
   schedule = Schedule(instance)
-  jobs = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.mr)
+  jobs = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.w)
 
   machines = [[] for i in range(instance.machines)]
   while len(jobs) > 0:
@@ -113,15 +113,15 @@ def LMR(instance):
 
     machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.memory - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
 
-    if available_memory >= job.mr:
+    if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
       machines[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
     else:
       assigned = False
       for i in range(1, len(jobs)):
-        if available_memory >= jobs[i].mr:
+        if available_memory >= jobs[i].w:
           job_index = i
           start_time = Operacje.getStartTime(machines, machine_index)
           machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -130,10 +130,10 @@ def LMR(instance):
 
       if assigned == False:
         for assignment_by_complete_time in sorted(assignments_running_now, key=lambda x: x.complete):
-          available_memory += assignment_by_complete_time.job.mr
+          available_memory += assignment_by_complete_time.job.w
           is_assigned = False
           for i in range(len(jobs)):
-            if available_memory >= jobs[i].mr:
+            if available_memory >= jobs[i].w:
               job_index = i
               start_time = assignment_by_complete_time.complete
               machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -151,7 +151,7 @@ def LMR(instance):
 def HMR(instance):
   instance = deepcopy(instance)
   schedule = Schedule(instance)
-  jobs = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.mr, reverse=True)
+  jobs = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.w, reverse=True)
 
   machines = [[] for i in range(instance.machines)]
   while len(jobs) > 0:
@@ -160,15 +160,15 @@ def HMR(instance):
 
     machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.memory - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
 
-    if available_memory >= job.mr:
+    if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
       machines[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
     else:
       assigned = False
       for i in range(1, len(jobs)):
-        if available_memory >= jobs[i].mr:
+        if available_memory >= jobs[i].w:
           job_index = i
           start_time = Operacje.getStartTime(machines, machine_index)
           machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -177,10 +177,10 @@ def HMR(instance):
 
       if assigned == False:
         for assignment_by_complete_time in sorted(assignments_running_now, key=lambda x: x.complete):
-          available_memory += assignment_by_complete_time.job.mr
+          available_memory += assignment_by_complete_time.job.w
           is_assigned = False
           for i in range(len(jobs)):
-            if available_memory >= jobs[i].mr:
+            if available_memory >= jobs[i].w:
               job_index = i
               start_time = assignment_by_complete_time.complete
               machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -207,15 +207,15 @@ def ALFA(instance):
 
     machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.memory - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
 
-    if available_memory >= job.mr:
+    if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
       machines[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
     else:
       assigned = False
       for i in range(1, len(jobs)):
-        if available_memory >= jobs[i].mr:
+        if available_memory >= jobs[i].w:
           job_index = i
           start_time = Operacje.getStartTime(machines, machine_index)
           machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -224,10 +224,10 @@ def ALFA(instance):
 
       if assigned == False:
         for assignment_by_complete_time in sorted(assignments_running_now, key=lambda x: x.complete):
-          available_memory += assignment_by_complete_time.job.mr
+          available_memory += assignment_by_complete_time.job.w
           is_assigned = False
           for i in range(len(jobs)):
-            if available_memory >= jobs[i].mr:
+            if available_memory >= jobs[i].w:
               job_index = i
               start_time = assignment_by_complete_time.complete
               machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -245,7 +245,7 @@ def ALFA(instance):
 def BETA(instance):
   instance = deepcopy(instance)
   schedule = Schedule(instance)
-  jobs = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.p / j.mr)
+  jobs = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.p / j.w)
 
   machines = [[] for i in range(instance.machines)]
   while len(jobs) > 0:
@@ -254,15 +254,15 @@ def BETA(instance):
 
     machine_index = Operacje.getMachineIndexWithLowestCMAX(machines)
     assignments_running_now = Operacje.getAssignmentsRunningNow(machines, machine_index)
-    available_memory  = schedule.memory - Operacje.getMemoryUsage(assignments_running_now)
+    available_memory  = schedule.ram - Operacje.getMemoryUsage(assignments_running_now)
 
-    if available_memory >= job.mr:
+    if available_memory >= job.w:
       start_time = Operacje.getStartTime(machines, machine_index)
       machines[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
     else:
       assigned = False
       for i in range(1, len(jobs)):
-        if available_memory >= jobs[i].mr:
+        if available_memory >= jobs[i].w:
           job_index = i
           start_time = Operacje.getStartTime(machines, machine_index)
           machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
@@ -271,10 +271,10 @@ def BETA(instance):
 
       if assigned == False:
         for assignment_by_complete_time in sorted(assignments_running_now, key=lambda x: x.complete):
-          available_memory += assignment_by_complete_time.job.mr
+          available_memory += assignment_by_complete_time.job.w
           is_assigned = False
           for i in range(len(jobs)):
-            if available_memory >= jobs[i].mr:
+            if available_memory >= jobs[i].w:
               job_index = i
               start_time = assignment_by_complete_time.complete
               machines[machine_index].append(JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))

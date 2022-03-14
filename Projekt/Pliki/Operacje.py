@@ -5,7 +5,8 @@ import plotly.express as px
 from Projekt.Pliki.Modele import Job
 from Projekt.Pliki.Modele import Instance
 
-def generateInstances(df, NUM_OF_INSTANCES=30, NUM_OF_MACHINES=16, NUM_OF_SAMPLE=100):
+
+def genNewInstances(df, NUM_OF_SAMPLE=100,  NUM_OF_INSTANCES=30, NUM_OF_MACHINES=16):
   instances = []
   for i in range(NUM_OF_INSTANCES):
     instance = Instance(machines=NUM_OF_MACHINES)
@@ -49,7 +50,7 @@ def flatten(t):
   return [item for sublist in t for item in sublist]
 
 def getMemoryUsage(assignments):
-  return sum(assignment.job.mr for assignment in assignments)
+  return sum(assignment.job.w for assignment in assignments)
 
 def getAssignmentsRunningNow(machines, current_machine_index):
   complete_time = 0
