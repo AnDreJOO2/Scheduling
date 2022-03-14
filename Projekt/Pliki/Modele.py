@@ -13,7 +13,7 @@ class Instance:
             self.jobs.append(Job("J" + str(len(self.jobs) + 1), random.randint(pmin, pmax)))
 
     def normalize(self, job):
-        return job.mr / 140509184
+        return job.w / 140509184
 
     def bound(self):
         m1 = sum(job.p / self.machines for job in self.jobs)
@@ -23,16 +23,16 @@ class Instance:
 
 class Job:
     # Konstruktor
-    def __init__(self, i, p, mr):
+    def __init__(self, i, p, w):
         assert (isinstance(p, int) and p > 0)
-        assert (isinstance(mr, int) and mr > 0)
+        assert (isinstance(w, int) and w > 0)
         self.i = i  # Identyfikator zadania (np. liczba lub ciąg znaków)
         self.p = p  # Czas wykonywania zadania
-        self.mr = mr  # Memory
+        self.w = w  # Waga zadania (Pamięć ram)
 
     # Reprezentacja zadania
     def __repr__(self):
-        return f"'{self.i}'; p = {self.p}, mr = {self.mr}"
+        return f"'{self.i}'; p = {self.p}, w = {self.w}"
 
 
 class JobAssignment:
@@ -41,8 +41,8 @@ class JobAssignment:
         assert (isinstance(m, int) and m > 0)
         assert (isinstance(s, int) and s >= 0)
         assert (isinstance(c, int) and c > s)
-        self.job = j  # Zadanie
-        self.machine = m  # Procesor, na którym zadanie się wykonuje
+        self.job = j  # Id zadania
+        self.machine = m  # Procesor
         self.start = s  # Czas rozpoczęcia zadania
         self.complete = c  # Czas zakończenia zadania
 
@@ -55,52 +55,59 @@ class Schedule:
         assert (isinstance(i, Instance))
         self.instance = i
         self.assignments = []
-        self.memory = 140509184  # 134 GB
+        self.ram = 140509184  # 140509184KB /1024/1024 =  134 GB
 
     def isFeasible(self):
-        # current_memory_usage = sum(map(lambda x: x.job.mr, filter(lambda x: x.start >= start or x.complete < start, assignments)))
-        # if current_memory_usage > self.memory:
-        #     return False
+        listaZadan = self.assignments
+        n = len(listaZadan)
 
-        # Sprawdzenie czy indetyfikator istnieje w jobs
+        # Sprawdzenie czy id istnieje w jobs
+        instacjaJobs = self.instance.jobs
+        a = len(instacjaJobs)
+        listaId = []
+        for i in range(0, a):
+            listaId.append(instacjaJobs[i].i)
+
+        #Sprawdzenie czy id istnieje w jobs
         unique_keys = [job.i for job in self.instance.jobs]
         for assignment_key in [assignment.job.i for assignment in self.assignments]:
             if assignment_key not in unique_keys:
-                print('ERROR: Sprawdzenie czy indetyfikator istnieje w jobs: {} {}'.format(assignment_key))
                 return False
 
         # W danej chwili, na danym procesorze, wykonuje się co najwyżej jedno zadanie.
-        machcines = {}
+        machines = {}
         for assignment in self.assignments:
             key = assignment.machine
-            if key in machcines:
-                machcines[key].append(assignment)
+            if key in machines:
+                machines[key].append(assignment)
             else:
-                machcines[key] = [assignment]
+                machines[key] = [assignment]
 
-        values = []
-        for key in machcines:
-            values.append(machcines[key])
+        # W danej chwili, na danym procesorze, wykonuje się co najwyżej jedno zadanie.
+        for i in range(0, n - 1):
+            for j in range(i + 1, n):
+                if listaZadan[i].machine == listaZadan[j].machine:
+                    zakres = range(listaZadan[i].start + 1, listaZadan[i].complete)
+                    if listaZadan[j].start in zakres or listaZadan[j].complete in zakres:
+                        return False
 
-        for machine in values:
-            for a in machine:
-                for aa in machine:
-                    if a.job != aa.job:
-                        if max(a.start, aa.start) < min(a.complete, aa.complete):
-                            print(
-                                'ERROR: W danej chwili, na danym procesorze, wykonuje się co najwyżej jedno zadanie: {} {}'.format(
-                                    a, aa))
-                            return False
+        # Na procesorach wykonują się tylko te zadania, które zostały opisane w instancji problemu.
+        if len(self.assignments) != len(self.instance.jobs):
+                return False
+
+        # Żadne zadanie nie wykonuje się na niedostepnym procesorze
+        for assignment in self.assignments:
+            if assignment.machine < 1 or assignment.machine > self.instance.machines:
+                return False
 
         # To samo zadanie nie wykonuje się jednocześnie na więcej niż jednym procesorze.
-        for a in self.assignments:
-            for aa in self.assignments:
-                if a.job == aa.job and a.machine != aa.machine:
-                    if max(a.start, aa.start) < min(a.complete, aa.complete):
-                        print(
-                            'ERROR: To samo zadanie nie wykonuje się jednocześnie na więcej niż jednym procesorze: {} {}'.format(
-                                a, aa))
-                        return False
+        for i in range(0, n - 1):
+            for j in range(i + 1, n):
+                if listaZadan[i].job.i == listaZadan[j].job.i:
+                    if listaZadan[i].machine != listaZadan[j].machine:
+                        zakres = range(listaZadan[i].start + 1, listaZadan[i].complete)
+                        if listaZadan[j].start in zakres or listaZadan[j].complete in zakres:
+                            return False
 
         jobs = {}
         for assignment in self.assignments:
@@ -114,34 +121,24 @@ class Schedule:
         for key in jobs:
             values.append(jobs[key])
 
+        #Każde zadanie zostało wykonane
         for v in values:
             worked_time = 0
             for k in v:
                 worked_time += k.complete - k.start
             if worked_time != v[0].job.p:
-                print('Każde zadanie zostało wykonane.: {}'.format(v[0].job.p))
                 return False
-            
-        # Na procesorach wykonują się tylko te zadania, które zostały opisane w instancji problemu.
-        if len(self.assignments) != len(self.instance.jobs):
-            print('ERROR: Na procesorach wykonują się tylko te zadania, które zostały opisane w instancji problemu')
-            return False
 
+
+        #Na procesorach wykonują się tylko te zadania, które zostały opisane w instancji problemu
         assignment_keys = [assignment.job.i for assignment in self.assignments]
         job_keys = [jobs.i for jobs in self.instance.jobs]
         for job_key in job_keys:
             if not job_key in assignment_keys:
-                print('ERROR: Na procesorach wykonują się tylko te zadania, które zostały opisane w instancji problemu')
-                return False
-
-        # Żadne zadanie nie wykonuje się na niedostepnym procesorze
-        for assignment in self.assignments:
-            if assignment.machine < 1 or assignment.machine > self.instance.machines:
-                print('ERROR: Żadne zadanie nie wykonuje się na niedostepnym procesorze')
                 return False
 
         return True
-        pass
+
 
     def cmax(self):
         assert self.isFeasible() == True
