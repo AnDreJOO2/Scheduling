@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c90837ff-75e4-482f-845f-cbe771c25afd" name="Changes" comment="Projekt - -M05_Main, update, zapis wykresów do pliku">
+    <list default="true" id="c90837ff-75e4-482f-845f-cbe771c25afd" name="Changes" comment="Projekt - -M05_Main, update, 5 wykresów zapisuje się do pliku">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Projekt/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Projekt/Pliki/Operacje.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Pliki/Operacje.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Projekt/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,7 +253,8 @@
       <workItem from="1646986900267" duration="30742000" />
       <workItem from="1647166702085" duration="6492000" />
       <workItem from="1647265979155" duration="17243000" />
-      <workItem from="1647296367562" duration="12667000" />
+      <workItem from="1647296367562" duration="12949000" />
+      <workItem from="1647334929942" duration="9547000" />
     </task>
     <task id="LOCAL-00001" summary="Ok">
       <created>1646507351705</created>
@@ -333,7 +333,14 @@
       <option name="project" value="LOCAL" />
       <updated>1647299723271</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Projekt - -M05_Main, update, 5 wykresów zapisuje się do pliku">
+      <created>1647309212913</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1647309212913</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -362,7 +369,8 @@
     <MESSAGE value="Projekt - -M05_Main, Podział na pliki, wersja się kompiluje" />
     <MESSAGE value="Projekt - -M05_Main, update" />
     <MESSAGE value="Projekt - -M05_Main, update, zapis wykresów do pliku" />
-    <option name="LAST_COMMIT_MESSAGE" value="Projekt - -M05_Main, update, zapis wykresów do pliku" />
+    <MESSAGE value="Projekt - -M05_Main, update, 5 wykresów zapisuje się do pliku" />
+    <option name="LAST_COMMIT_MESSAGE" value="Projekt - -M05_Main, update, 5 wykresów zapisuje się do pliku" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -383,7 +391,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Scheduling$main.coverage" NAME="main Coverage Results" MODIFIED="1645605513877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Scheduling$Main.coverage" NAME="Main Coverage Results" MODIFIED="1647309144138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Projekt" />
+    <SUITE FILE_PATH="coverage/Scheduling$Main.coverage" NAME="Main Coverage Results" MODIFIED="1647344875033" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Projekt" />
     <SUITE FILE_PATH="coverage/Scheduling$M02B_Main.coverage" NAME="M02B_Main Coverage Results" MODIFIED="1646996732650" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M03_Main.coverage" NAME="M03_Main Coverage Results" MODIFIED="1647184133150" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M02A_Main.coverage" NAME="M02A_Main Coverage Results" MODIFIED="1646436402216" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
