@@ -42,8 +42,10 @@ def generateScatterPlot(df, fileName, key1, key2, title):
   fig = px.scatter(df,
                    x=key1,
                    y=key2,
-                   color=key2,
-                   title=title
+                   color=key1,
+                   title=title,
+                   width=1280,
+                   height=720
                    )
   fig.write_image(fileName)
 
@@ -55,7 +57,9 @@ def generateHistogramPlot(df, fileName, key, title):
                      opacity=0.8,
                      log_y=True,  # represent bars with log scale
                      log_x=False,
-                     color_discrete_sequence=['#ff3636']  # color of histogram bars
+                     color_discrete_sequence=['#ff3636'], # color of histogram bars
+                     width= 1280,
+                     height=720
                      )
   fig.write_image(fileName)
 
