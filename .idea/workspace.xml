@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SPLITTER_PROPORTION" value="0.23833059" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="c90837ff-75e4-482f-845f-cbe771c25afd" name="Changes" comment="Projekt - -M05_Main, update, 5 wykresów zapisuje się do pliku">
-      <change afterPath="$PROJECT_DIR$/Projekt/Pliki/wykresy/wykres_punktowy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Projekt/Pliki/wykresy/wymagany_czas.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Projekt/Pliki/wykresy/zużycie_pamięci.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Projekt/Pliki/wykresy/czasy_wykonania_.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Projekt/Pliki/wykresy/maksymalne_czasy_wykonania.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Projekt/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Projekt/Pliki/Modele.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Pliki/Modele.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Projekt/Pliki/Operacje.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Pliki/Operacje.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zapat.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Projekt/Pliki/Szeregowania.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Pliki/Szeregowania.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,9 +42,9 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/M02B_Main.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/M03_Main.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/M02A_Main.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/M02B_Main.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -59,6 +63,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/szeregowanie-main" />
+    <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -260,6 +265,7 @@
       <workItem from="1647296367562" duration="12949000" />
       <workItem from="1647334929942" duration="9547000" />
       <workItem from="1647348400602" duration="470000" />
+      <workItem from="1647354520558" duration="4748000" />
     </task>
     <task id="LOCAL-00001" summary="Ok">
       <created>1646507351705</created>
@@ -399,7 +405,7 @@
     <SUITE FILE_PATH="coverage/Scheduling$Main.coverage" NAME="Main Coverage Results" MODIFIED="1647348414623" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Projekt" />
     <SUITE FILE_PATH="coverage/Scheduling$M02B_Main.coverage" NAME="M02B_Main Coverage Results" MODIFIED="1646996732650" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$M03_Main.coverage" NAME="M03_Main Coverage Results" MODIFIED="1647184133150" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Scheduling$Main__1_.coverage" NAME="Main (1) Coverage Results" MODIFIED="1647348842466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Projekt" />
+    <SUITE FILE_PATH="coverage/Scheduling$Main__1_.coverage" NAME="Main (1) Coverage Results" MODIFIED="1647359847197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Projekt" />
     <SUITE FILE_PATH="coverage/Scheduling$M02A_Main.coverage" NAME="M02A_Main Coverage Results" MODIFIED="1646436402216" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Scheduling$main__1_.coverage" NAME="Main Coverage Results" MODIFIED="1647290274680" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Projekt" />
     <SUITE FILE_PATH="coverage/Scheduling$M04_Main.coverage" NAME="M04_Main Coverage Results" MODIFIED="1647280272822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

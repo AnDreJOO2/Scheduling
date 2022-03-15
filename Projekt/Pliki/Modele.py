@@ -1,24 +1,18 @@
-import random
-import numpy as np
-from sklearn import preprocessing
-
 class Instance:
     def __init__(self, machines=16):
         self.jobs = []
         assert (isinstance(machines, int) and machines > 0)
         self.machines = machines
 
-    def generate(self, n, pmin=1, pmax=1):
-        for i in range(1, n + 1):
-            self.jobs.append(Job("J" + str(len(self.jobs) + 1), random.randint(pmin, pmax)))
-
+    # normalizacja zadania = ram/maksymalny możliwy ram
     def normalize(self, job):
         return job.w / 140509184
 
-    def bound(self):
-        m1 = sum(job.p / self.machines for job in self.jobs)
-        m2 = sum(job.p * self.normalize(job) for job in self.jobs)
-        return max(m1, m2)
+    # normalizacja zadania = ram/maksymalny możliwy ram
+    def check(self):
+        pierwsze = sum(job.p / self.machines for job in self.jobs)  # Czas wykonywania zadania / ilość maszyn
+        drugie = sum(job.p * self.normalize(job) for job in self.jobs)  # Czas wykonywania zadania / normalizacja
+        return max(pierwsze, drugie)  # zwraca max
 
 
 class Job:
@@ -57,6 +51,7 @@ class Schedule:
         self.assignments = []
         self.ram = 140509184  # 140509184KB /1024/1024 =  134 GB
 
+    # sprawdza poprawność uszeregowania
     def isFeasible(self):
         listaZadan = self.assignments
         n = len(listaZadan)
@@ -68,7 +63,7 @@ class Schedule:
         for i in range(0, a):
             listaId.append(instacjaJobs[i].i)
 
-        #Sprawdzenie czy id istnieje w jobs
+        # Sprawdzenie czy id istnieje w jobs
         unique_keys = [job.i for job in self.instance.jobs]
         for assignment_key in [assignment.job.i for assignment in self.assignments]:
             if assignment_key not in unique_keys:
@@ -93,7 +88,7 @@ class Schedule:
 
         # Na procesorach wykonują się tylko te zadania, które zostały opisane w instancji problemu.
         if len(self.assignments) != len(self.instance.jobs):
-                return False
+            return False
 
         # Żadne zadanie nie wykonuje się na niedostepnym procesorze
         for assignment in self.assignments:
@@ -121,7 +116,7 @@ class Schedule:
         for key in jobs:
             values.append(jobs[key])
 
-        #Każde zadanie zostało wykonane
+        # Każde zadanie zostało wykonane
         for v in values:
             worked_time = 0
             for k in v:
@@ -129,8 +124,7 @@ class Schedule:
             if worked_time != v[0].job.p:
                 return False
 
-
-        #Na procesorach wykonują się tylko te zadania, które zostały opisane w instancji problemu
+        # Na procesorach wykonują się tylko te zadania, które zostały opisane w instancji problemu
         assignment_keys = [assignment.job.i for assignment in self.assignments]
         job_keys = [jobs.i for jobs in self.instance.jobs]
         for job_key in job_keys:
@@ -139,7 +133,7 @@ class Schedule:
 
         return True
 
-
+    # cmax uszeregowania
     def cmax(self):
         assert self.isFeasible() == True
         return max(map(lambda x: x.complete, self.assignments))
