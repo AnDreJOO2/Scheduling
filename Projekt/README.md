@@ -6,7 +6,8 @@ Wymagania:
 - pandas
 - sklearn
 - random
-- plotly 
+- plotly
+- kaleido
 
 
 - Python interpreter 3.10 lub wyższy
