@@ -78,28 +78,28 @@ for instance in instances:
   Dane['BETA']['CZAS'].append(end - start)
   Dane['BETA']['CMAX'].append(i.cmax() / instance.bound())
 
+#
+# Operacje.generateBoxPlot({
+#   'RND': Dane['RND']['CZAS'],
+#   'LMR': Dane['LMR']['CZAS'],
+#   'HMR': Dane['HMR']['CZAS'],
+#   'LPT': Dane['LPT']['CZAS'],
+#   'ALFA': Dane['ALFA']['CZAS'],
+#   'BETA': Dane['BETA']['CZAS']
+# }, 'Pliki/wykresy/czasy_wykonania_.png', 'Czasy wykonania algorytmów') # wykres skrzynkowy dla czasów wykonania algorytmów
+#
+# Operacje.generateBoxPlot({
+#   'RND': Dane['RND']['CMAX'],
+#   'LMR': Dane['LMR']['CMAX'],
+#   'HMR': Dane['HMR']['CMAX'],
+#   'LPT': Dane['LPT']['CMAX'],
+#   'ALFA': Dane['ALFA']['CMAX'],
+#   'BETA': Dane['BETA']['CMAX']
+# }, 'Pliki/wykresy/maksymalne_czasy_wykonania.png', 'Maksymalne czasy wykonania algorytmów') # wykres skrzynkowy dla czasów wykonania algorytmów
 
-Operacje.generateBoxPlot({
-  'RND': Dane['RND']['CZAS'],
-  'LMR': Dane['LMR']['CZAS'],
-  'HMR': Dane['HMR']['CZAS'],
-  'LPT': Dane['LPT']['CZAS'],
-  'ALFA': Dane['ALFA']['CZAS'],
-  'BETA': Dane['BETA']['CZAS']
-}, 'Pliki/wykresy/czasy_wykonania_.png', 'Czasy wykonania algorytmów') # wykres skrzynkowy dla czasów wykonania algorytmów
-
-Operacje.generateBoxPlot({
-  'RND': Dane['RND']['CMAX'],
-  'LMR': Dane['LMR']['CMAX'],
-  'HMR': Dane['HMR']['CMAX'],
-  'LPT': Dane['LPT']['CMAX'],
-  'ALFA': Dane['ALFA']['CMAX'],
-  'BETA': Dane['BETA']['CMAX']
-}, 'Pliki/wykresy/maksymalne_czasy_wykonania.png', 'Maksymalne czasy wykonania algorytmów') # wykres skrzynkowy dla czasów wykonania algorytmów
-
-Operacje.generateHistogramPlot(df, "Pliki/wykresy/zużycie_pamięci.png", "Memory requirement (KB per CPU)")
-Operacje.generateHistogramPlot(df,"Pliki/wykresy/wymagany_czas.png", "Processing time (s)")
-Operacje.generateScatterPlot(df, "Pliki/wykresy/wykres_punktowy.png", "Processing time (s)", "Memory requirement (KB per CPU)")
+Operacje.generateHistogramPlot(df, "Pliki/wykresy/zużycie_pamięci.png", "Memory requirement (KB per CPU)", "Histogram - zużycie pamięci")
+Operacje.generateHistogramPlot(df,"Pliki/wykresy/wymagany_czas.png", "Processing time (s)", "Histogram - wymagany czas")
+Operacje.generateScatterPlot(df, "Pliki/wykresy/wykres_punktowy.png", "Memory requirement (KB per CPU)", "Processing time (s)", "Wykres punktowy")
 
 print()
 finish = process_time()

@@ -13,7 +13,7 @@ def genNewInstances(df, sampleCount,  instanceCount, processorCount):
     instance = Instance(machines=processorCount)
     for index, row in df.sample( #df.sample = funkcja która wybiera wartości losowo
       sampleCount,
-      # random_state=1 # Pozwala ustawić ziarno/seed, aby wybierane wartości były przewidywane
+      # random_state=123456789 # Pozwala ustawić ziarno/seed, aby wybierane wartości były przewidywane
     ).iterrows():
       memory = row['Memory requirement (KB per CPU)'].item()
       processing_time = row['Processing time (s)'].item()
@@ -34,25 +34,30 @@ def generateBoxPlot(data, fileName, title):
   df = pd.DataFrame(data=data)
   plot = df.plot.box(title=title)
   fig = plot.get_figure()
-  fig.set_size_inches(10, 6)
+  fig.set_size_inches(12, 7)
   fig.savefig(fileName)
 
 # Generuje wykres punktowy
-def generateScatterPlot(df, fileName, key1, key2):
-  fig = px.scatter(
-    df, x=key2, y=key1, opacity=0.65,
-    trendline="ols", trendline_color_override="darkblue"
-  )
+def generateScatterPlot(df, fileName, key1, key2, title):
+  fig = px.scatter(df,
+                   x=key1,
+                   y=key2,
+                   color=key2,
+                   title=title
+                   )
   fig.write_image(fileName)
+
 
 # Generuje historgram
-def generateHistogramPlot(df, fileName, key):
-  fig = px.histogram(df, x=key)
+def generateHistogramPlot(df, fileName, key, title):
+  fig = px.histogram(df, x=key,
+                     title=title,
+                     opacity=0.8,
+                     log_y=True,  # represent bars with log scale
+                     log_x=False,
+                     color_discrete_sequence=['#ff3636']  # color of histogram bars
+                     )
   fig.write_image(fileName)
-
-# generateHistogramPlot(df, "Memory requirement (KB per CPU)")
-# generateHistogramPlot(df, "Processing time (s)")
-# generateScatterPlot(df)
 
 # Szuka procasora który ma najmniejszy CMAX
 def findLowestCMAXMachine(machines):
