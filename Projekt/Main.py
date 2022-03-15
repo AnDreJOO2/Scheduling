@@ -11,17 +11,15 @@ from Pliki.Szeregowania import LPT
 from Pliki.Szeregowania import ALFA
 from Pliki.Szeregowania import BETA
 
-ILOSC_DANYCH = 1500 # 5000 rekordów
+ILOSC_DANYCH = 500 # 5000 rekordów
 ILOSC_PROCESOROW  = 16 # 16 procesorow
-ILOSC_INSTANCJI = 10 # 30 instancji na każdy algorytm
+ILOSC_INSTANCJI = 15 # 30 instancji na każdy algorytm
 
 
-df = pd.read_csv('./zapat.csv', sep=';') #wczytanie danych z pliku zapat.csv
-df = df[(df['Memory requirement (KB per CPU)'] > 0) & (df['Memory requirement (KB per CPU)'] <= 140509184) & (df['Processing time (s)'] > 0)]
-
+df = Operacje.readDataFromCSVFile("./zapat.csv", ";")# odczyt
 instances = Operacje.genNewInstances(df, ILOSC_DANYCH, ILOSC_INSTANCJI, ILOSC_PROCESOROW) #instancje
 
-DATA = {
+Dane = {
   'RND': { 'CZAS': [], 'CMAX': [] },
   'LMR': { 'CZAS': [], 'CMAX': [] },
   'HMR': { 'CZAS': [], 'CMAX': [] },
@@ -30,79 +28,81 @@ DATA = {
   'BETA': { 'CZAS': [], 'CMAX': [] }
 }
 
-n = 0
-t1_start = process_time()
+print("Początek")
+print("Ustawione wartości dla każdego algorytmu")
+print("   Ilość wczytanych rekordów z pliku zapat.csv:",ILOSC_DANYCH,", Ilość procesorów:",ILOSC_PROCESOROW,", Ilość instancji",ILOSC_INSTANCJI)
+
+
+iteracja = 0
+ileInstancji = len(instances)
+run = process_time()
 for instance in instances:
+  iteracja = iteracja + 1
+  print("Instancja numer:",iteracja,"/",ileInstancji)
+  print("   Trwa wykonywanie ...")
 
   start = process_time()
   i = RND(instance)
   end = process_time()
-  DATA['RND']['CZAS'].append(end - start)
-  DATA['RND']['CMAX'].append(i.cmax() / instance.bound())
-  n += 1
-  print(n)
+  Dane['RND']['CZAS'].append(end - start)
+  Dane['RND']['CMAX'].append(i.cmax() / instance.bound())
 
   start = process_time()
   i = LMR(instance)
   end = process_time()
-  DATA['LMR']['CZAS'].append(end - start)
-  DATA['LMR']['CMAX'].append(i.cmax() / instance.bound())
-  n += 1
-  print(n)
+  Dane['LMR']['CZAS'].append(end - start)
+  Dane['LMR']['CMAX'].append(i.cmax() / instance.bound())
 
   start = process_time()
   i = HMR(instance)
   end = process_time()
-  DATA['HMR']['CZAS'].append(end - start)
-  DATA['HMR']['CMAX'].append(i.cmax() / instance.bound())
-  n += 1
-  print(n)
+  Dane['HMR']['CZAS'].append(end - start)
+  Dane['HMR']['CMAX'].append(i.cmax() / instance.bound())
 
   start = process_time()
   i = LPT(instance)
   end = process_time()
-  DATA['LPT']['CZAS'].append(end - start)
-  DATA['LPT']['CMAX'].append(i.cmax() / instance.bound())
-  n += 1
-  print(n)
+  Dane['LPT']['CZAS'].append(end - start)
+  Dane['LPT']['CMAX'].append(i.cmax() / instance.bound())
 
   start = process_time()
   i = ALFA(instance)
   end = process_time()
-  DATA['ALFA']['CZAS'].append(end - start)
-  DATA['ALFA']['CMAX'].append(i.cmax() / instance.bound())
-  n += 1
-  print(n)
+  Dane['ALFA']['CZAS'].append(end - start)
+  Dane['ALFA']['CMAX'].append(i.cmax() / instance.bound())
+
 
   start = process_time()
   i = BETA(instance)
   end = process_time()
-  DATA['BETA']['CZAS'].append(end - start)
-  DATA['BETA']['CMAX'].append(i.cmax() / instance.bound())
-  n += 1
-  print(n)
+  Dane['BETA']['CZAS'].append(end - start)
+  Dane['BETA']['CMAX'].append(i.cmax() / instance.bound())
 
-# print(DATA)
-# print("RDN czasy: ", DATA['RND']['CZAS'])
-# print("RDN cmax: ", DATA['RND']['CMAX'])
 
 Operacje.generateBoxPlot({
-  'RND': DATA['RND']['CZAS'],
-  'LMR': DATA['LMR']['CZAS'],
-  'HMR': DATA['HMR']['CZAS'],
-  'LPT': DATA['LPT']['CZAS'],
-  'ALFA': DATA['ALFA']['CZAS'],
-  'BETA': DATA['BETA']['CZAS']
-}, 'Czasy wykonania algorytmów', 'Pliki/wykresy/czasy_wykonania_.png') # wykres skrzynkowy dla czasów wykonania algorytmów
+  'RND': Dane['RND']['CZAS'],
+  'LMR': Dane['LMR']['CZAS'],
+  'HMR': Dane['HMR']['CZAS'],
+  'LPT': Dane['LPT']['CZAS'],
+  'ALFA': Dane['ALFA']['CZAS'],
+  'BETA': Dane['BETA']['CZAS']
+}, 'Pliki/wykresy/czasy_wykonania_.png', 'Czasy wykonania algorytmów') # wykres skrzynkowy dla czasów wykonania algorytmów
 
 Operacje.generateBoxPlot({
-  'RND': DATA['RND']['CMAX'],
-  'LMR': DATA['LMR']['CMAX'],
-  'HMR': DATA['HMR']['CMAX'],
-  'LPT': DATA['LPT']['CMAX'],
-  'ALFA': DATA['ALFA']['CMAX'],
-  'BETA': DATA['BETA']['CMAX']
-}, 'Maksymalne czasy wykonania algorytmów', 'Pliki/wykresy/maksymalne_czasy_wykonania.png') # wykres skrzynkowy dla czasów wykonania algorytmów
+  'RND': Dane['RND']['CMAX'],
+  'LMR': Dane['LMR']['CMAX'],
+  'HMR': Dane['HMR']['CMAX'],
+  'LPT': Dane['LPT']['CMAX'],
+  'ALFA': Dane['ALFA']['CMAX'],
+  'BETA': Dane['BETA']['CMAX']
+}, 'Pliki/wykresy/maksymalne_czasy_wykonania.png', 'Maksymalne czasy wykonania algorytmów') # wykres skrzynkowy dla czasów wykonania algorytmów
 
+Operacje.generateHistogramPlot(df, "Pliki/wykresy/zużycie_pamięci.png", "Memory requirement (KB per CPU)")
+Operacje.generateHistogramPlot(df,"Pliki/wykresy/wymagany_czas.png", "Processing time (s)")
+Operacje.generateScatterPlot(df, "Pliki/wykresy/wykres_punktowy.png", "Processing time (s)", "Memory requirement (KB per CPU)")
 
-
+print()
+finish = process_time()
+print("Czas wykonania całego programu:",finish-run,"s")
+print("Wygenerowane wykresy znajdują się w ścieżce: Projekt/Pliki/wykresy/")
+print("Koniec")

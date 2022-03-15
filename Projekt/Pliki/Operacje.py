@@ -1,18 +1,19 @@
 import pandas as pd
 import random
 import plotly.express as px
+import matplotlib.pyplot as plt
 
 from Projekt.Pliki.Modele import Job
 from Projekt.Pliki.Modele import Instance
 
-
-def genNewInstances(df, NUM_OF_SAMPLE=100,  NUM_OF_INSTANCES=30, NUM_OF_MACHINES=16):
+# Generuje nowe instancje
+def genNewInstances(df, sampleCount,  instanceCount, processorCount):
   instances = []
-  for i in range(NUM_OF_INSTANCES):
-    instance = Instance(machines=NUM_OF_MACHINES)
-    for index, row in df.sample(
-      NUM_OF_SAMPLE,
-      # random_state=1
+  for i in range(instanceCount):
+    instance = Instance(machines=processorCount)
+    for index, row in df.sample( #df.sample = funkcja która wybiera wartości losowo
+      sampleCount,
+      # random_state=1 # Pozwala ustawić ziarno/seed, aby wybierane wartości były przewidywane
     ).iterrows():
       memory = row['Memory requirement (KB per CPU)'].item()
       processing_time = row['Processing time (s)'].item()
@@ -21,32 +22,40 @@ def genNewInstances(df, NUM_OF_SAMPLE=100,  NUM_OF_INSTANCES=30, NUM_OF_MACHINES
     instances.append(instance)
   return instances
 
-df = pd.read_csv("./zapat.csv", sep=";")
-df = df[(df["Memory requirement (KB per CPU)"] > 0) & (df["Memory requirement (KB per CPU)"] <= 140509184) & (df["Processing time (s)"] > 0)]
+# Przy odczycie danych z pliku brane pod uwagę są tylko: zadania które porzebują więcej ramu niż 0, mniej niż 134GB, czas wykonywania zadań jest większy niż 0
+def readDataFromCSVFile(filePath, separator):
+  df = pd.read_csv(filePath, sep=separator)
+  df = df[(df["Memory requirement (KB per CPU)"] > 0) & (df["Memory requirement (KB per CPU)"] <= 140509184) & (df["Processing time (s)"] > 0)]
+  return df
 
-def generateBoxPlot(data, title, filename):
+
+# Generuje wykres skrzynkowy
+def generateBoxPlot(data, fileName, title):
   df = pd.DataFrame(data=data)
   plot = df.plot.box(title=title)
   fig = plot.get_figure()
   fig.set_size_inches(10, 6)
-  fig.savefig(filename)
+  fig.savefig(fileName)
 
-def generateScatterPlot(df):
+# Generuje wykres punktowy
+def generateScatterPlot(df, fileName, key1, key2):
   fig = px.scatter(
-    df, x="Processing time (s)", y="Memory requirement (KB per CPU)", opacity=0.65,
+    df, x=key2, y=key1, opacity=0.65,
     trendline="ols", trendline_color_override="darkblue"
   )
-  fig.show()
+  fig.write_image(fileName)
 
-def generateHistogramPlot(df, key):
+# Generuje historgram
+def generateHistogramPlot(df, fileName, key):
   fig = px.histogram(df, x=key)
-  fig.show()
+  fig.write_image(fileName)
 
 # generateHistogramPlot(df, "Memory requirement (KB per CPU)")
 # generateHistogramPlot(df, "Processing time (s)")
-generateScatterPlot(df)
+# generateScatterPlot(df)
 
-def findLowestCMAXMachine(machines): # Znajduje procesor o najmniejszym CMAX
+# Szuka procasora który ma najmniejszy CMAX
+def findLowestCMAXMachine(machines):
   current_index = 0
   for index, machine in enumerate(machines):
     if len(machine) == 0:
