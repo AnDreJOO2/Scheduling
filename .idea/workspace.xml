@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c90837ff-75e4-482f-845f-cbe771c25afd" name="Changes" comment="Projekt - -M05_Main, update, czyszczenie kodu, wygenerowane wykresy dla 30 instncji po 5000 rekordów">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Projekt/Pliki/Operacje.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Pliki/Operacje.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Projekt/Pliki/Szeregowania.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Pliki/Szeregowania.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Projekt/projekt.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Projekt/projekt.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Projekt/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Projekt/Pliki/wykresy/czasy_wykonania_.png" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Pliki/wykresy/czasy_wykonania_.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Projekt/Pliki/wykresy/maksymalne_czasy_wykonania.png" beforeDir="false" afterPath="$PROJECT_DIR$/Projekt/Pliki/wykresy/maksymalne_czasy_wykonania.png" afterDir="false" />
     </list>
@@ -40,9 +40,9 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/M02A_Main.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/M02B_Main.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/M03_Main.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/M02A_Main.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -67,6 +67,7 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\PyCharm 2021.3.2\Projekty\Scheduling\Projekt\Pliki\wykresy" />
+      <recent name="E:\PyCharm 2021.3.2\Projekty\Scheduling\Projekt" />
       <recent name="E:\Projekty\Python\Scheduling" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -265,6 +266,7 @@
       <workItem from="1647334929942" duration="9547000" />
       <workItem from="1647348400602" duration="470000" />
       <workItem from="1647354520558" duration="10341000" />
+      <workItem from="1647383113784" duration="217000" />
     </task>
     <task id="LOCAL-00001" summary="Ok">
       <created>1646507351705</created>

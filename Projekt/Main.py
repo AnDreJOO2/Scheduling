@@ -8,9 +8,9 @@ from Pliki.Szeregowania import LMR
 from Pliki.Szeregowania import LPT
 from Pliki.Szeregowania import RND
 
-ILOSC_DANYCH = 500  # 5000 rekordów
+ILOSC_DANYCH = 5000  # 5000 rekordów
 ILOSC_PROCESOROW = 16  # 16 procesorow
-ILOSC_INSTANCJI = 15  # 30 instancji na każdy algorytm
+ILOSC_INSTANCJI = 30 # 30 instancji na każdy algorytm
 
 df = Operacje.readDataFromCSVFile("./zapat.csv", ";")  # odczyt
 instances = Operacje.genNewInstances(df, ILOSC_DANYCH, ILOSC_INSTANCJI, ILOSC_PROCESOROW)  # instancje
