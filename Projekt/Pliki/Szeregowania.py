@@ -9,48 +9,60 @@ from Projekt.Pliki.Modele import Schedule
 def RND(instance):
     instance = deepcopy(instance)
     schedule = Schedule(instance)
-    jobs = deepcopy(schedule.instance.jobs)
 
-    procesory = Operacje.setDefaultProcesorValues(instance)
+    jobs = deepcopy(schedule.instance.jobs)  # Zadania
+
+    procesory = Operacje.setDefaultProcesorValues(
+        instance)  # Ustawia domyśle wartości dla każdego procesora, puste tablice
 
     while len(jobs) > 0:
         job_index = 0
         job = jobs[job_index]
 
-        machine_index = Operacje.findLowestCMAXMachine(procesory)
-        aktualneZadanie = Operacje.getAssignmentsRunningNow(procesory, machine_index)
-        freeRam = Operacje.checkFreeRam(aktualneZadanie, schedule)
+        indexPocecesoraLowestCMAX = Operacje.findLowestCMAXMachine(
+            procesory)  # index procesora który ma najmniejszy CMAX
 
-        if freeRam >= job.w:
-            start_time = Operacje.getStartTime(procesory, machine_index)
-            procesory[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
+        obecneZadania = Operacje.getAssignmentsRunningNow(procesory,
+                                                          indexPocecesoraLowestCMAX)  # obecne zadanie w uszeregowaniu
+
+        freeRam = Operacje.checkFreeRam(obecneZadania,
+                                        schedule)  # wartość obecnie wolnej pamięci ram = 134GB - używany ram
+
+        if freeRam >= job.w:  # Jeśli wolny ram jest większy niż ram potrzebny przez zadanie:
+            start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+            procesory[indexPocecesoraLowestCMAX].append(
+                JobAssignment(job, indexPocecesoraLowestCMAX + 1, start_time, start_time + job.p))
         else:
-            assigned = False
+            zadanieJestprzypisane = False
             for i in range(1, len(jobs)):
                 if freeRam >= jobs[i].w:
                     job_index = i
-                    start_time = Operacje.getStartTime(procesory, machine_index)
-                    procesory[machine_index].append(
-                        JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
-                    assigned = True
+                    start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+                    procesory[indexPocecesoraLowestCMAX].append(
+                        JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
+                                      start_time + jobs[job_index].p))
+                    zadanieJestprzypisane = True
                     break
 
-            if assigned == False:
-                for assignment_by_complete_time in sorted(aktualneZadanie, key=lambda x: x.complete):
+            if zadanieJestprzypisane == False:
+                sortedByComplete = sorted(obecneZadania, key=lambda x: x.complete)
+                for assignment_by_complete_time in sortedByComplete:
                     freeRam += assignment_by_complete_time.job.w
-                    is_assigned = False
+                    czyPrzypisano = False
+
                     for i in range(len(jobs)):
+
                         if freeRam >= jobs[i].w:
                             job_index = i
                             start_time = assignment_by_complete_time.complete
-                            procesory[machine_index].append(
-                                JobAssignment(jobs[job_index], machine_index + 1, start_time,
+                            procesory[indexPocecesoraLowestCMAX].append(
+                                JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
                                               start_time + jobs[job_index].p))
-                            is_assigned = True
+                            czyPrzypisano = True
                             break
-                    if is_assigned == True:
+                    if czyPrzypisano == True:
                         break
-        jobs.pop(job_index)
+        jobs.pop(job_index)  # usuwa zadanie z listy
 
     for m in procesory:
         schedule.assignments += m
@@ -70,38 +82,41 @@ def LMR(instance):
         job_index = 0
         job = jobs[job_index]
 
-        machine_index = Operacje.findLowestCMAXMachine(procesory)
-        aktualneZadanie = Operacje.getAssignmentsRunningNow(procesory, machine_index)
-        freeRam = Operacje.checkFreeRam(aktualneZadanie, schedule)
+        indexPocecesoraLowestCMAX = Operacje.findLowestCMAXMachine(procesory)
+        obecneZadania = Operacje.getAssignmentsRunningNow(procesory, indexPocecesoraLowestCMAX)
+        freeRam = Operacje.checkFreeRam(obecneZadania, schedule)
 
         if freeRam >= job.w:
-            start_time = Operacje.getStartTime(procesory, machine_index)
-            procesory[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
+            start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+            procesory[indexPocecesoraLowestCMAX].append(
+                JobAssignment(job, indexPocecesoraLowestCMAX + 1, start_time, start_time + job.p))
         else:
-            assigned = False
+            zadanieJestprzypisane = False
             for i in range(1, len(jobs)):
                 if freeRam >= jobs[i].w:
                     job_index = i
-                    start_time = Operacje.getStartTime(procesory, machine_index)
-                    procesory[machine_index].append(
-                        JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
-                    assigned = True
+                    start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+                    procesory[indexPocecesoraLowestCMAX].append(
+                        JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
+                                      start_time + jobs[job_index].p))
+                    zadanieJestprzypisane = True
                     break
 
-            if assigned == False:
-                for assignment_by_complete_time in sorted(aktualneZadanie, key=lambda x: x.complete):
+            if zadanieJestprzypisane == False:
+                sortedByComplete = sorted(obecneZadania, key=lambda x: x.complete)
+                for assignment_by_complete_time in sortedByComplete:
                     freeRam += assignment_by_complete_time.job.w
-                    is_assigned = False
+                    czyPrzypisano = False
                     for i in range(len(jobs)):
                         if freeRam >= jobs[i].w:
                             job_index = i
                             start_time = assignment_by_complete_time.complete
-                            procesory[machine_index].append(
-                                JobAssignment(jobs[job_index], machine_index + 1, start_time,
+                            procesory[indexPocecesoraLowestCMAX].append(
+                                JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
                                               start_time + jobs[job_index].p))
-                            is_assigned = True
+                            czyPrzypisano = True
                             break
-                    if is_assigned == True:
+                    if czyPrzypisano == True:
                         break
         jobs.pop(job_index)
 
@@ -122,39 +137,42 @@ def HMR(instance):
         job_index = 0
         job = jobs[job_index]
 
-        machine_index = Operacje.findLowestCMAXMachine(procesory)
-        aktualneZadanie = Operacje.getAssignmentsRunningNow(procesory, machine_index)
+        indexPocecesoraLowestCMAX = Operacje.findLowestCMAXMachine(procesory)
+        obecneZadania = Operacje.getAssignmentsRunningNow(procesory, indexPocecesoraLowestCMAX)
 
-        freeRam = Operacje.checkFreeRam(aktualneZadanie, schedule)
+        freeRam = Operacje.checkFreeRam(obecneZadania, schedule)
 
         if freeRam >= job.w:
-            start_time = Operacje.getStartTime(procesory, machine_index)
-            procesory[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
+            start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+            procesory[indexPocecesoraLowestCMAX].append(
+                JobAssignment(job, indexPocecesoraLowestCMAX + 1, start_time, start_time + job.p))
         else:
-            assigned = False
+            zadanieJestprzypisane = False
             for i in range(1, len(jobs)):
                 if freeRam >= jobs[i].w:
                     job_index = i
-                    start_time = Operacje.getStartTime(procesory, machine_index)
-                    procesory[machine_index].append(
-                        JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
-                    assigned = True
+                    start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+                    procesory[indexPocecesoraLowestCMAX].append(
+                        JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
+                                      start_time + jobs[job_index].p))
+                    zadanieJestprzypisane = True
                     break
 
-            if assigned == False:
-                for assignment_by_complete_time in sorted(aktualneZadanie, key=lambda x: x.complete):
+            if zadanieJestprzypisane == False:
+                sortedByComplete = sorted(obecneZadania, key=lambda x: x.complete)
+                for assignment_by_complete_time in sortedByComplete:
                     freeRam += assignment_by_complete_time.job.w
-                    is_assigned = False
+                    czyPrzypisano = False
                     for i in range(len(jobs)):
                         if freeRam >= jobs[i].w:
                             job_index = i
                             start_time = assignment_by_complete_time.complete
-                            procesory[machine_index].append(
-                                JobAssignment(jobs[job_index], machine_index + 1, start_time,
+                            procesory[indexPocecesoraLowestCMAX].append(
+                                JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
                                               start_time + jobs[job_index].p))
-                            is_assigned = True
+                            czyPrzypisano = True
                             break
-                    if is_assigned == True:
+                    if czyPrzypisano == True:
                         break
         jobs.pop(job_index)
 
@@ -174,40 +192,43 @@ def LPT(instance):
         job_index = 0
         job = jobs[job_index]
 
-        machine_index = Operacje.findLowestCMAXMachine(procesory)
+        indexPocecesoraLowestCMAX = Operacje.findLowestCMAXMachine(procesory)
 
-        aktualneZadanie = Operacje.getAssignmentsRunningNow(procesory, machine_index)
+        obecneZadania = Operacje.getAssignmentsRunningNow(procesory, indexPocecesoraLowestCMAX)
 
-        freeRam = Operacje.checkFreeRam(aktualneZadanie, schedule)
+        freeRam = Operacje.checkFreeRam(obecneZadania, schedule)
 
         if freeRam >= job.w:
-            start_time = Operacje.getStartTime(procesory, machine_index)
-            procesory[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
+            start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+            procesory[indexPocecesoraLowestCMAX].append(
+                JobAssignment(job, indexPocecesoraLowestCMAX + 1, start_time, start_time + job.p))
         else:
-            assigned = False
+            zadanieJestprzypisane = False
             for i in range(1, len(jobs)):
                 if freeRam >= jobs[i].w:
                     job_index = i
-                    start_time = Operacje.getStartTime(procesory, machine_index)
-                    procesory[machine_index].append(
-                        JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
-                    assigned = True
+                    start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+                    procesory[indexPocecesoraLowestCMAX].append(
+                        JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
+                                      start_time + jobs[job_index].p))
+                    zadanieJestprzypisane = True
                     break
 
-            if assigned == False:
-                for assignment_by_complete_time in sorted(aktualneZadanie, key=lambda x: x.complete):
+            if zadanieJestprzypisane == False:
+                sortedByComplete = sorted(obecneZadania, key=lambda x: x.complete)
+                for assignment_by_complete_time in sortedByComplete:
                     freeRam += assignment_by_complete_time.job.w
-                    is_assigned = False
+                    czyPrzypisano = False
                     for i in range(len(jobs)):
                         if freeRam >= jobs[i].w:
                             job_index = i
                             start_time = assignment_by_complete_time.complete
-                            procesory[machine_index].append(
-                                JobAssignment(jobs[job_index], machine_index + 1, start_time,
+                            procesory[indexPocecesoraLowestCMAX].append(
+                                JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
                                               start_time + jobs[job_index].p))
-                            is_assigned = True
+                            czyPrzypisano = True
                             break
-                    if is_assigned == True:
+                    if czyPrzypisano == True:
                         break
         jobs.pop(job_index)
 
@@ -221,46 +242,51 @@ def LPT(instance):
 def ALFA(instance):
     instance = deepcopy(instance)
     schedule = Schedule(instance)
-    jobs = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.p)
+    jobs = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.p)  # sortowanie przez czas wykoniania zadania
 
     procesory = Operacje.setDefaultProcesorValues(instance)
 
-    while len(jobs) > 0:
+    while len(jobs) > 0:  # dopóki są zadania wykonuj:
         job_index = 0
         job = jobs[job_index]
 
-        machine_index = Operacje.findLowestCMAXMachine(procesory)
-        aktualneZadanie = Operacje.getAssignmentsRunningNow(procesory, machine_index)
-        freeRam = Operacje.checkFreeRam(aktualneZadanie, schedule)
+        indexPocecesoraLowestCMAX = Operacje.findLowestCMAXMachine(procesory)
+        obecneZadania = Operacje.getAssignmentsRunningNow(procesory, indexPocecesoraLowestCMAX)
+        freeRam = Operacje.checkFreeRam(obecneZadania, schedule)
 
         if freeRam >= job.w:
-            start_time = Operacje.getStartTime(procesory, machine_index)
-            procesory[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
+            start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+            procesory[indexPocecesoraLowestCMAX].append(
+                JobAssignment(job, indexPocecesoraLowestCMAX + 1, start_time, start_time + job.p))
         else:
-            assigned = False
+            zadanieJestprzypisane = False
             for i in range(1, len(jobs)):
                 if freeRam >= jobs[i].w:
                     job_index = i
-                    start_time = Operacje.getStartTime(procesory, machine_index)
-                    procesory[machine_index].append(
-                        JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
-                    assigned = True
+                    start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+                    procesory[indexPocecesoraLowestCMAX].append(
+                        JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
+                                      start_time + jobs[job_index].p))
+                    zadanieJestprzypisane = True
                     break
 
-            if assigned == False:
-                for assignment_by_complete_time in sorted(aktualneZadanie, key=lambda x: x.complete):
+            if zadanieJestprzypisane == False:
+
+                sortedByComplete = sorted(obecneZadania, key=lambda x: x.complete)
+
+                for assignment_by_complete_time in sortedByComplete:
                     freeRam += assignment_by_complete_time.job.w
-                    is_assigned = False
+                    czyPrzypisano = False
                     for i in range(len(jobs)):
                         if freeRam >= jobs[i].w:
                             job_index = i
                             start_time = assignment_by_complete_time.complete
-                            procesory[machine_index].append(
-                                JobAssignment(jobs[job_index], machine_index + 1, start_time,
+                            procesory[indexPocecesoraLowestCMAX].append(
+                                JobAssignment(jobs[job_index], indexPocecesoraLowestCMAX + 1, start_time,
                                               start_time + jobs[job_index].p))
-                            is_assigned = True
+                            czyPrzypisano = True
                             break
-                    if is_assigned == True:
+                    if czyPrzypisano == True:
                         break
         jobs.pop(job_index)
 
@@ -273,47 +299,53 @@ def ALFA(instance):
 def BETA(instance):
     instance = deepcopy(instance)
     schedule = Schedule(instance)
-    jobs = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.p / j.w)
+
+    posortowaneJoby = sorted(deepcopy(schedule.instance.jobs), key=lambda j: j.p / j.w)  # czas wykonania / pamięć ram
 
     procesory = Operacje.setDefaultProcesorValues(instance)
-    while len(jobs) > 0:
+    while len(posortowaneJoby) > 0:
         job_index = 0
-        job = jobs[job_index]
+        job = posortowaneJoby[job_index]
 
-        machine_index = Operacje.findLowestCMAXMachine(procesory)
-        aktualneZadanie = Operacje.getAssignmentsRunningNow(procesory, machine_index)
-        freeRam = Operacje.checkFreeRam(aktualneZadanie, schedule)
+        indexPocecesoraLowestCMAX = Operacje.findLowestCMAXMachine(procesory)
+        obecneZadania = Operacje.getAssignmentsRunningNow(procesory, indexPocecesoraLowestCMAX)
+        freeRam = Operacje.checkFreeRam(obecneZadania, schedule)
 
         if freeRam >= job.w:
-            start_time = Operacje.getStartTime(procesory, machine_index)
-            procesory[machine_index].append(JobAssignment(job, machine_index + 1, start_time, start_time + job.p))
+            start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+            procesory[indexPocecesoraLowestCMAX].append(
+                JobAssignment(job, indexPocecesoraLowestCMAX + 1, start_time, start_time + job.p))
         else:
-            assigned = False
-            for i in range(1, len(jobs)):
-                if freeRam >= jobs[i].w:
+            zadanieJestprzypisane = False
+            for i in range(1, len(posortowaneJoby)):
+                if freeRam >= posortowaneJoby[i].w:
                     job_index = i
-                    start_time = Operacje.getStartTime(procesory, machine_index)
-                    procesory[machine_index].append(
-                        JobAssignment(jobs[job_index], machine_index + 1, start_time, start_time + jobs[job_index].p))
-                    assigned = True
+                    start_time = Operacje.getStartTime(procesory, indexPocecesoraLowestCMAX)
+                    procesory[indexPocecesoraLowestCMAX].append(
+                        JobAssignment(posortowaneJoby[job_index], indexPocecesoraLowestCMAX + 1, start_time,
+                                      start_time + posortowaneJoby[job_index].p))
+                    zadanieJestprzypisane = True
                     break
 
-            if assigned == False:
-                for assignment_by_complete_time in sorted(aktualneZadanie, key=lambda x: x.complete):
+            if zadanieJestprzypisane == False:
+
+                sortedByComplete = sorted(obecneZadania, key=lambda x: x.complete)
+
+                for assignment_by_complete_time in sortedByComplete:
                     freeRam += assignment_by_complete_time.job.w
-                    is_assigned = False
-                    for i in range(len(jobs)):
-                        if freeRam >= jobs[i].w:
+                    czyPrzypisano = False
+                    for i in range(len(posortowaneJoby)):
+                        if freeRam >= posortowaneJoby[i].w:
                             job_index = i
                             start_time = assignment_by_complete_time.complete
-                            procesory[machine_index].append(
-                                JobAssignment(jobs[job_index], machine_index + 1, start_time,
-                                              start_time + jobs[job_index].p))
-                            is_assigned = True
+                            procesory[indexPocecesoraLowestCMAX].append(
+                                JobAssignment(posortowaneJoby[job_index], indexPocecesoraLowestCMAX + 1, start_time,
+                                              start_time + posortowaneJoby[job_index].p))
+                            czyPrzypisano = True
                             break
-                    if is_assigned == True:
+                    if czyPrzypisano == True:
                         break
-        jobs.pop(job_index)
+        posortowaneJoby.pop(job_index)
 
     for m in procesory:
         schedule.assignments += m
