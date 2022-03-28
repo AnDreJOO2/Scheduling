@@ -4,11 +4,14 @@ punktacja:
 
     1 termin - SPODZIEWANE - 2 termin - MAX
 
-MO1 = 17-22/25-?-30
-MO2A = 10-15-?-15
-MO2B = 3-8/10-?-16/20
-MO3 = 0-11-?-16
-MO4 = 0-11-?-17
-MO5 = 0-?-?-15/20
+M01 = 17-22/25-?-30
+M02A = 10-15-?-15
+M02B = 3-8/10-?-16/20
+M03 = 0-11-?-16
+M04 = 0-11-?-17
+M05 = 0-?-?-15/20
 
-Punktacja: ?/120
+
+M01+M02A+M02B+M03+M04 = 73punktów
+MO5 = 15 punktów
+Punktacja: 88/120, ocena 4 za ćwiczenia, 3 za wykład
